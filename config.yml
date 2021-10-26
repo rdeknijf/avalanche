@@ -68,9 +68,9 @@ params:
       url: "index.xml"
 
   editPost:
-    URL: "https://github.com/avalanche/content"
-    Text: "Suggest Changes" # edit text
-    appendFilePath: true # to append file path to Edit link
+    URL: "https://github.com/rdeknijf/avalanche/blob/master/content"
+    Text: "Suggest Changes"
+    appendFilePath: true
 
   # label:
   #     text: "Home"
