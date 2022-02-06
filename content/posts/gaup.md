@@ -27,11 +27,10 @@ Need a docker image built?
     with:
       push: true
       tags: |
-        eu.gcr.io/kieskeurig-data-analyse/legaport2/run:${{ github.run_number }}
-        eu.gcr.io/kieskeurig-data-analyse/legaport2/run:latest
-      cache-from: eu.gcr.io/kieskeurig-data-analyse/legaport2/run:latest
+        eu.gcr.io/<project>/image:${{ github.run_number }}
+        eu.gcr.io/<project>/image:latest
+      cache-from: eu.gcr.io/<project>/image:latest
       cache-to: type=inline
-      target: run
 ```
 Need some Terraform deployed?
 
