@@ -1,7 +1,9 @@
 baseURL: "https://deknijf.com"
 title: De Knijf ICT
-paginate: 5
 theme: papermod
+
+pagination:
+  pagerSize: 5
 
 enableInlineShortcodes: true
 enableRobotsTXT: true
@@ -9,7 +11,7 @@ buildDrafts: true
 buildFuture: false
 buildExpired: false
 enableEmoji: true
-googleAnalytics: UA-10690335-2
+googleAnalytics: G-F3KDCBQZY7
 
 minify:
   disableXML: true
