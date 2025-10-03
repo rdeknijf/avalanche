@@ -1,5 +1,5 @@
 +++
-title = "Backward compatibility is a curse"
+title = "On Backward Compatibility"
 date = 2022-09-16
 description = "Backward compatibility is a (sometimes) necessary evil that should be avoided whenever possible. Sounds simple, right?"
 draft = false
@@ -15,13 +15,12 @@ Kubernetes. We control the environment, all the way from development to producti
 nowhere where we don’t explicitly decide what Python version to use. On top of that most of that
 software is technically scripts, not installable packages.
 
-My point is that backwards compatibility is often a knee-jerk reaction. We see it a lot and assume
-that - since _good_ packages do it - we should do it too, for then _we_ are good and our fathers
-will
-finally love us!
+My point is that backwards compatibility is often a knee-jerk reaction. We see it implemented widely and assume that - since established packages do it - we should do it too, believing it automatically makes our software better.
 
 But we should stop and think whether it’s really applicable to our situation.
 Especially in this case it’s a really costly assumption to make. Docker/Kubernetes gives us this
 magnificent gift of only ever having to deal with the latest version. Why would you throw that out
 to imitate packages that do have to deal with that burden. And anyone who’s had to deal with it
 knows that that is what it is, a burden.
+
+So just like the common advice about microservices: "You're probably not Google." The same principle applies here - you're likely not developing a public package with thousands of unknown users, so don't assume you need the same constraints. (Unless you actually are developing such a package, in which case backward compatibility becomes essential.)
