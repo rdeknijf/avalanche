@@ -13,13 +13,14 @@ spreadsheet. And yet I see people doing it all the time! Do me a favor, and look
 Take one finger and color a cell. Nope, you can’t. There are, however, 26 letters and 10 numbers,
 right there. No hotkeys, just dedicated buttons, just for those!
 
-Second: you can’t calculate anything on it! Which is the primary purpose of a spreadsheet. Let's say
+Second: you can't calculate anything on it! Which is the primary purpose of a spreadsheet. Let's say
 that you have a list of tasks. And you strike through those that are done. Now, if you want to know
-what percentage is done, you’re shit out of luck. If you’d added a column `done` filled with ones
-and zeros, it would be so trivial that Google Spreadsheets will even suggest it for you.
+what percentage is done, you're out of luck. If you'd added a column `done` filled with ones and
+zeros, it would be so trivial that Google Spreadsheets will even suggest it for you.
 
-Cute sidenote: in Excel you there actually _are_ functions that work with formatting. But that's just more rope to hang yourself with. You can’t export formatting to csv. So if for whatever reason you want to do that… No joy;
-because you encoded valuable info in an unsupported format.
+Cute sidenote: in Excel there actually _are_ functions that work with formatting. But that's just
+more rope to hang yourself with. You can't export formatting to csv. So if for whatever reason you
+want to do that... no joy, because you encoded valuable info in an unsupported format.
 
 So, conclusion: colors in spreadsheets are great, and often make or break human understanding of the
 content. I use them all the time! But please use them like the name suggests, as formatting, not

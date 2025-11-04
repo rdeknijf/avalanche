@@ -14,15 +14,17 @@ or even until it's just frozen in place because nobody will touch it.
 
 So, how to find a balance?
 
-
-> Side note: I'm aware of Dependabot, and I should probably dive into it more. But let's say my experience hasn't been all positive, as of yet. And what if that's not an option? (I wouldn't know when, but hey.)
+Side note: I'm aware of Dependabot, and I should probably dive into it more. But let's say my
+experience hasn't been all positive, as of yet. And what if that's not an option?
 
 ### The brilliant idea: Biweekly nagging
 
 Add a step in your CICD that blocks if there are more than X packages out of date. Then, over time,
-tweak that X until it's like every two weeks or so. Don't run this pipeline on `master`, you still want
-to be able to hotfix things. But on `develop` or `feature/` make CICD force someone to deal with it. 
-(Practically this meant running [`pip-upgrader` ](https://pypi.org/project/pip-upgrader/) which is
+tweak that X until it's like every two weeks or so. Don't run this pipeline on `master`, you still
+want to be able to hotfix things. But on `develop` or `feature/` branches make CICD force someone to
+deal with it.
+
+Practically this meant running [`pip-upgrader`](https://pypi.org/project/pip-upgrader/) which is
 still not a big deal. Of course this is a bit of a nuisance, and I was informed of that fact quite a
 few times by my teammates. But it did avoid a much bigger problem, and kept us free to use the
 latest of everything.

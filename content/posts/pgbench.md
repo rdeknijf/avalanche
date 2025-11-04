@@ -154,6 +154,9 @@ Second test:
 
 # Conclusion
 
-In my 2(!) tests sockets are about 7% faster; which surprised me a bit. I leave it up to you to decide 
-whether that's enough to switch if you're currently using TCP. You should probably check it in your 
-own cluster.
+In my 2(!) tests sockets are about 7% faster, which surprised me a bit. I expected the Cloud Proxy
+tunnel to equalize the performance, but there's still a measurable difference.
+
+I leave it up to you to decide whether that's enough to switch if you're currently using TCP. You
+should probably benchmark it in your own cluster with your actual workload, but at least now you
+know what to expect.

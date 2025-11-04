@@ -6,17 +6,18 @@ draft = false
 +++
 
 Let's say you are a happy BigQuery user, and you spend about 100 euro a month on it. This may be
-fine for your (small) business but an expensive query is quick to make. But what is expensive?
-Because really; it's hard to create one that costs more than 30 euro. But what if someone
-accidentally deploys something that fires off a 1 euro query every second. That means a 2.6
-million (!) BQ bill; if you don't notice for a few days you'll find yourself begging Google for a
+fine for your (small) business but an expensive query is quick to make. What is expensive?
+Because really, it's hard to create one that costs more than 30 euro. But what if someone
+accidentally deploys something that fires off a 1 euro query every second? That means a 2.6
+million (!) BQ bill. If you don't notice for a few days you'll find yourself begging Google for a
 refund of hundreds of thousands of euros.
 
 So, be safe and set up a Google Project module and use it for every project you set up and add some
 quotas.
-(I'd advise against actually adding the actual `google_project` resource to Terraform however,
-because a `terraform destroy` will probably kill more than you'd like, and it will definitely create
-a lot of ghost resources in a mangled `tfstate`. But that's another matter.)
+
+A quick note: I'd advise against adding the actual `google_project` resource to Terraform, because
+a `terraform destroy` will probably kill more than you'd like, and it will definitely create a lot
+of ghost resources in a mangled `tfstate`.
 
 And the first of those quotas should be the following:
 

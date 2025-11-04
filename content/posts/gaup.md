@@ -49,15 +49,14 @@ Marketplace link to figure out what the latest version is. (Spoiler: it's not al
 
 So I scratched an itch. I wanted something where I could just paste in the GA workflow code and get
 it back with updated versions. I built it in Javascript, because it's just logical. It's my first JS
-in at least 10 years, but I had some very insightful help from a frontend colleague. I started out
-interpreting the yaml, but that's really just dumb. It starts to complain about errors, and I just
-don't care about that in this stage. I know I've copy-pasted some gibberish, that's okey, I'm not
-done with it yet!
-Now it just regexes the content and replaces any version tag it finds with the latest. Which it
-pulls asynchronously from the Github API.
+in at least 10 years, but I had some very insightful help from a frontend colleague.
 
-Now I (and some colleagues of mine) use it multiple times a week at least. All joking aside I'm 
+I started out interpreting the yaml, but that's really just dumb. It starts to complain about
+errors, and I just don't care about that in this stage. I know I've copy-pasted some gibberish,
+that's okay, I'm not done with it yet! Now it just regexes the content and replaces any version tag
+it finds with the latest, which it pulls asynchronously from the Github API.
+
+Now I (and some colleagues of mine) use it multiple times a week at least. All joking aside, I'm
 pretty sure it must have saved me hours already, and a whole lot of frustration.
-So, spare yourself some grinding, for free!
 
-Check it out: [gaup.deknijf.com](https://gaup.deknijf.com)
+So, spare yourself some grinding, for free! Check it out: [gaup.deknijf.com](https://gaup.deknijf.com)
