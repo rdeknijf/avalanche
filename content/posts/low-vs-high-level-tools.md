@@ -14,11 +14,12 @@ Examples of this are:
 
 Yes, you'll understand the lower level part of the problem you're solving better. But logically this
 must cost brainpower, otherwise there wouldn't be more understanding. However, no matter how smart
-you are, brainpower is a finite resource. So if you spend it on understanding a low level thing that
-could have been hidden from you using a high-level helper, you can't spend it on something else.
-Spending your brainpower this way can be the right choice, **if that low level thing is the
-important
-part to understand**. But it hardly ever is.
+you are, brainpower is a finite resource.
+
+So if you spend it on understanding a low level thing that could have been hidden from you using a
+high-level helper, you can't spend it on something else. Spending your brainpower this way can be
+the right choice, **if that low level thing is the important part to understand**. But it hardly
+ever is.
 
 > "But I'm faster that way!"
 
@@ -36,7 +37,8 @@ Until it fails of course, but since you now understand, so you can fix it.
 
 My point is, these helper tools were invented to be more effective than the low level approach.
 They're meant to be accelerators. If a tool has gained enough traction that it ended up on your
-screen, it's very likely that someone succeeded in that goal. Sticking with the low-level must (
-statistically) therefore be slower. Doing something slower because you then have more grip is only
-useful if that grip is more important than what you're trying to achieve. In the short term, or the
-long.
+screen, it's very likely that someone succeeded in that goal.
+
+Sticking with the low-level must (statistically) therefore be slower. Doing something slower because
+you then have more grip is only useful if that grip is more important than what you're trying to
+achieve. In the short term, or the long.
