@@ -13,7 +13,7 @@ I run a context percentage indicator in my status bar. Green when usage is low, 
 
 ## Add this to your status bar
 
-Create `~/.claude/statusline.sh`:
+The simplest version is a bash script. Create `~/.claude/statusline.sh`:
 
 ```bash
 #!/bin/bash
@@ -48,7 +48,15 @@ Make it executable, then add this to `~/.claude/settings.json`:
 }
 ```
 
-That's it. You now have a permanent context awareness indicator. Green means go. Yellow means "maybe wrap this up soon."
+Green means go. Yellow means "maybe wrap this up soon."
+
+### The upgrade: ccstatusline
+
+I've since switched to [ccstatusline](https://github.com/sirmalloc/ccstatusline) with custom Python widgets. It gives me the same 40% context bar, plus session and weekly token usage tracking.
+
+![ccstatusline with custom bars showing context usage, session burn rate, and weekly burn rate](/images/ccstatusline.png)
+
+The context bar (Ctx) uses a custom Python widget with the same green-to-yellow-at-40% logic from the bash script — ccstatusline doesn't do that out of the box, but it supports custom command widgets that make it easy to build. The session and weekly bars track something different: your API usage limits versus elapsed time. That's a separate problem from context quality, and I'll write about it separately.
 
 ## Why 40%
 
@@ -112,4 +120,4 @@ Same principle, really. Both are about noticing what you're spending cognitive c
 
 You wouldn't let your desk pile up with every document you've ever looked at while trying to solve a problem. You'd keep the relevant ones in front of you and file the rest.
 
-A shell script in your status bar, a color change from green to yellow, and suddenly you have awareness of something that was invisible before. That's all the 40% rule is. Not a law. Just a number on a dashboard that quietly makes you better at the thing you're already doing.
+A status bar indicator, a color change from green to yellow, and suddenly you have awareness of something that was invisible before. That's all the 40% rule is. Not a law. Just a number on a dashboard that quietly makes you better at the thing you're already doing.
