@@ -1,5 +1,5 @@
 +++
-title = "Every Problem Can Be Claude's Problem"
+title = "Make Every Problem Claude's Problem"
 date = 2026-03-21
 description = "When something annoys me twice, I make a folder, start Claude Code, and hand the problem over permanently."
 draft = false
