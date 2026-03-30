@@ -1,5 +1,5 @@
 baseURL: "https://deknijf.com"
-title: De Knijf ICT
+title: "Rutger de Knijf"
 theme: papermod
 
 pagination:
@@ -46,7 +46,7 @@ outputs:
 
 params:
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
-  description: "De Knijf ICT"
+  description: "Infrastructure, DevOps, Python, and AI agents. Writing about building systems that work."
   author: "Rutger de Knijf"
   defaultTheme: auto
   # disableThemeToggle: true
@@ -76,17 +76,17 @@ params:
 
   homeInfoParams:
     Title: "Rutger de Knijf"
-    Content: "Terraform | Python | Kubernetes | GCP | AWS"
+    Content: "Optimizing software delivery. Writing about infra, Python, cloud & AI agents."
 
   socialIcons:
     - name: linkedin
       url: "https://www.linkedin.com/in/rutger-de-knijf-480182b/"
+    - name: x
+      url: "https://x.com/rdeknijf"
     - name: github
       url: "https://github.com/rdeknijf"
     - name: stackoverflow
       url: "https://stackoverflow.com/users/1393879/rutger-de-knijf"
-    - name: keybase
-      url: "https://keybase.io/rdeknijf"
     - name: RsS
       url: "index.xml"
 
