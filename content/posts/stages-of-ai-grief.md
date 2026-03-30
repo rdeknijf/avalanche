@@ -3,6 +3,7 @@ title = "The Stages of AI Grief"
 date = 2026-03-29
 description = "I was watching my craft melt away like a block of ice in the sun. And then I came out the other side."
 draft = false
+aliases = ["/posts/grief-stages-of-agentic-coding/"]
 +++
 
 I don't think I've ever had so much fun in my programming career as I do now.
