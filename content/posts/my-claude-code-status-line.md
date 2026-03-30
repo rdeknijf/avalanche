@@ -3,6 +3,10 @@ title = "My Claude Code Status Line"
 date = 2026-03-18
 description = "The full ccstatusline setup — config, custom widgets, and Model Intelligence score — that turns invisible AI state into glanceable awareness"
 draft = false
+[cover]
+image = "images/sculptures/hermes.jpg"
+alt = "Hermes of Praxiteles (c. 340 BC)"
+caption = "Hermes of Praxiteles (c. 340 BC)"
 +++
 
 The problem wasn't tokens. It was having to keep wondering.

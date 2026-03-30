@@ -5,6 +5,10 @@ description = "When something annoys me twice, I make a folder, start Claude Cod
 draft = false
 tags = ["ai", "claude-code", "developer-productivity", "workflow", "agentic-coding"]
 aliases = ["/posts/every-problem-is-claudes-problem/"]
+[cover]
+image = "images/sculptures/atlas.jpg"
+alt = "Farnese Atlas (2nd century AD)"
+caption = "Farnese Atlas (2nd century AD)"
 +++
 
 So there's this thing I've been mentioning to so many people recently: "Make every problem Claude's problem". What do I mean by that. Basically, if you have a problem. Make a folder, open `claude` and tell it (with `/voice` - Yes, I'm talking to my machines all day. Like a lunatic.): "Hey Claude, make a `CLAUDE.md` file with the following: You are now the owner of problem X. I expect you to first research how you can deal with it, at least for now and ideally permanently. I'll run you once in a while, so you'll get to check and/or re-fix and the opportunity to tune your approach."

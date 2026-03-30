@@ -2,7 +2,7 @@
 title = "`internal_error` in Google Cloud HTTP(S) Load Balancing logs"
 date = 2021-12-11
 description = "Google HTTP loadbalancers are great. But this very undescriptive error threw me a curveball."
-draft = false 
+draft = false
 +++
 
 I'd set up a Google App Engine service which was working fine, but I routed traffic to it via an

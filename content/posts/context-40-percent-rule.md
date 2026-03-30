@@ -3,6 +3,10 @@ title = "The 40% Rule"
 date = 2026-03-08
 description = "Why keeping your AI coding assistant's context under 40% makes it noticeably smarter"
 draft = false
+[cover]
+image = "images/sculptures/the_thinker.jpg"
+alt = "Rodin, The Thinker (1904)"
+caption = "Rodin, The Thinker (1904)"
 +++
 
 Something subtle happens as your Claude Code context fills up. The output gets slightly less sharp. The architecture suggestions get more generic. The creative leaps come less often. The code still works, but it's more... obvious.

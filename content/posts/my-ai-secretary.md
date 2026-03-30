@@ -3,6 +3,10 @@ title = "My AI Secretary"
 date = 2026-03-03
 description = "How I built a personal AI assistant from markdown files, MCP servers, and Claude Code — and what it actually feels like to use one."
 draft = false
+[cover]
+image = "images/sculptures/venus_de_milo.jpg"
+alt = "Venus de Milo (c. 130 BC)"
+caption = "Venus de Milo (c. 130 BC)"
 +++
 
 I finally got a secretary. Not a real one, alas, but still. Ever since I can remember I've wanted one.

@@ -3,6 +3,10 @@ title = "Your AI Fuel Gauge"
 date = 2026-03-10
 description = "A status bar widget that proves you have enough tokens — so you stop worrying and start building"
 draft = false
+[cover]
+image = "images/sculptures/sleeping_ariadne.jpg"
+alt = "Sleeping Ariadne (2nd century AD)"
+caption = "Sleeping Ariadne (2nd century AD)"
 +++
 
 You're probably not running out of tokens. You're running out of confidence.

@@ -4,6 +4,11 @@ date = 2026-03-29
 description = "I was watching my craft melt away like a block of ice in the sun. And then I came out the other side."
 draft = false
 aliases = ["/posts/grief-stages-of-agentic-coding/"]
+
+[cover]
+image = "images/sculptures/pieta.jpg"
+alt = "Michelangelo, Pietà (1499)"
+caption = "Michelangelo, Pietà (1499)"
 +++
 
 I don't think I've ever had so much fun in my programming career as I do now.
