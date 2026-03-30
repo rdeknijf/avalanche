@@ -1,5 +1,5 @@
 +++
-title = "The Grief Stages of Agentic Coding"
+title = "The Stages of AI Grief"
 date = 2026-03-29
 description = "I was watching my craft melt away like a block of ice in the sun. And then I came out the other side."
 draft = false
