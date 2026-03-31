@@ -11,9 +11,11 @@ alt = "Michelangelo, Pietà (1499)"
 caption = "Michelangelo, Pietà (1499)"
 +++
 
-I don't think I've ever had so much fun in my programming career as I do now.
+{{< audience >}}
+People who work with AI daily — or are starting to — and have complicated feelings about it.
+{{< /audience >}}
 
-Which is strange, because a few weeks ago I was in a very different place. I was watching - in horror - as the machine on my desk was taking over my craft. Like most people I guess, I derive quite a lot of my identity from that craft; hence the horror. (Let's ignore for now whether that's a good thing or not.)
+I don't think I've ever had so much fun in my programming career as I do now. Which is strange, because a few weeks ago I was in a very different place. I was watching - in horror - as the machine on my desk was taking over my craft. Like most people I guess, I derive quite a lot of my identity from that craft; hence the horror. (Let's ignore for now whether that's a good thing or not.)
 
 I just watched it melt away. Like a block of ice in the sun; inexorable. In that moment it felt like I was witnessing an emerging god: an uncontrollable force in the sky asserts its influence over all it touches, and every day, it touches more. It was dreadful. And then the realization dawned upon me: I will never learn another programming language. My aspirations to learn Golang properly. To switch to a career as a Rust programmer. Gone.
 

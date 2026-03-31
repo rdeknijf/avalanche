@@ -1,0 +1,24 @@
+/* Sculpture banner strips
+   Crops cover images into a 160px horizontal band */
+
+.entry-cover {
+    margin-bottom: var(--gap);
+    text-align: center;
+}
+
+/* Constrain the image, not the figure (so figcaption stays visible) */
+.entry-cover img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: var(--radius);
+}
+
+/* Subtle caption styling for art credit */
+.entry-cover figcaption {
+    font-size: 0.7rem;
+    color: var(--secondary);
+    opacity: 0.6;
+    margin-top: 0.3rem;
+    font-style: italic;
+}
