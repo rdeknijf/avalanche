@@ -23,11 +23,7 @@ But here's the thing. It's never been easier to learn a new programming language
 
 Hell, in the past year I taught myself electronics. I had never soldered anything and now I'm regularly ordering PCBs that I've designed. Never in my wildest dreams could I have predicted that even two years ago.
 
-So it's easier than ever to learn something new.
-
-And for more and more things every day, it's just not necessary anymore.
-
-That hurts on a level I didn't know existed.
+So it's easier than ever to learn something new. And for more and more things every day, it's just not necessary anymore. That hurts on a level I didn't know existed.
 
 ## It feels like grief because it is
 
