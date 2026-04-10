@@ -3,6 +3,7 @@ title = "The AI-Assistance Skyline"
 date = 2026-04-07
 description = "Definitely not just a colorful bar chart."
 draft = false
+aliases = ["/posts/skills-skyline/"]
 
 [cover]
 image = "images/sculptures/tyche_antioch.jpg"
