@@ -8,7 +8,7 @@ aliases = ["/posts/skills-skyline/"]
 [cover]
 image = "images/sculptures/tyche_antioch.jpg"
 alt = "Tyche of Antioch (Roman copy, c. 300 BC)"
-caption = "Tyche of Antioch (Roman copy, c. 300 BC)"
+caption = "Tyche of Antioch (Roman copy, c. 300 BC) - Personifying a city, with a literal skyline on her head."
 +++
 
 <style>
