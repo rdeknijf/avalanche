@@ -433,4 +433,36 @@ h1, h2, h3, h4, h5, h6,
     }
 }
 
-/* .subscribe-hero removed 2026-04-11 — signup is now a text link in extend_footer */
+/* ── End-of-post subscribe aside ── */
+.post-subscribe {
+    max-width: 34em;
+    margin: 3em auto 1.5em;
+    padding-top: 2em;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--secondary);
+}
+
+.post-subscribe p {
+    margin: 0;
+}
+
+.post-subscribe a {
+    color: var(--primary);
+    font-style: normal;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+.post-subscribe a:hover {
+    color: #8b4513;
+}
+
+.dark .post-subscribe a:hover {
+    color: #d4a574;
+}
