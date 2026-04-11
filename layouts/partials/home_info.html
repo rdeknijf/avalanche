@@ -1,0 +1,34 @@
+{{- with site.Params.homeInfoParams }}
+<article class="first-entry home-info">
+    <header class="entry-header">
+        <h1>{{ .Title | markdownify }}</h1>
+    </header>
+    <div class="entry-content">
+        {{ .Content | markdownify }}
+    </div>
+    <footer class="entry-footer">
+        {{ partial "social_icons.html" (dict "align" site.Params.homeInfoParams.AlignSocialIconsTo) }}
+    </footer>
+</article>
+{{- end }}
+
+<aside class="subscribe-hero" aria-labelledby="subscribe-hero-heading">
+    <div class="subscribe-hero-inner">
+        <span class="subscribe-hero-label">Stay in touch</span>
+        <div class="subscribe-hero-headline" id="subscribe-hero-heading">Get new essays by email</div>
+        <p class="subscribe-hero-description">Infrastructure, AI agents, and whatever I&rsquo;m figuring out that week. Sent when there&rsquo;s a new post &mdash; not on a schedule.</p>
+        <form class="subscribe-form"
+              action="https://buttondown.com/api/emails/embed-subscribe/rdeknijf"
+              method="post">
+            <label for="bd-hero-email" class="visually-hidden">Email address</label>
+            <input type="email"
+                   name="email"
+                   id="bd-hero-email"
+                   placeholder="you@example.com"
+                   autocomplete="email"
+                   required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="subscribe-fine-print">No spam. Unsubscribe anytime.</p>
+    </div>
+</aside>

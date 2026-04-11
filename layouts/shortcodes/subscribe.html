@@ -1,0 +1,24 @@
+<aside class="subscribe-box" aria-labelledby="subscribe-heading">
+  <span class="subscribe-label">Stay in touch</span>
+  <h3 id="subscribe-heading" class="subscribe-headline">Get new essays by email</h3>
+  <p class="subscribe-description">
+    {{- with .Inner -}}
+      {{ . | markdownify }}
+    {{- else -}}
+      New essays from deknijf.com, sent when they&rsquo;re written. No schedule, no filler.
+    {{- end -}}
+  </p>
+  <form class="subscribe-form"
+        action="https://buttondown.com/api/emails/embed-subscribe/rdeknijf"
+        method="post">
+    <label for="bd-email" class="visually-hidden">Email address</label>
+    <input type="email"
+           name="email"
+           id="bd-email"
+           placeholder="you@example.com"
+           autocomplete="email"
+           required>
+    <button type="submit">Subscribe</button>
+  </form>
+  <p class="subscribe-fine-print">No spam. Unsubscribe anytime.</p>
+</aside>
