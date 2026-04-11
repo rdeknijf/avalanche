@@ -11,6 +11,18 @@ alt = "Tyche of Antioch (Roman copy, c. 300 BC)"
 caption = "Tyche of Antioch (Roman copy, c. 300 BC)"
 +++
 
+<style>
+/* Post-specific mobile fixes — 2026-04-11 */
+@media (max-width: 600px) {
+  /* Comparison canvas row — shrink canvases so all 3 fit side by side */
+  #me-compare, #bro1, #bro2 { width: min(180px, 28vw) !important; }
+  /* Builder widget — let the wide grid scroll horizontally instead of blowing out the page */
+  #builder { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  #builder > * { min-width: 0; }
+  #skill-rows > div { min-width: 560px; }
+}
+</style>
+
 There's this idea going around that AI is the great equalizer. "If everyone gets the same AI, anyone can do everything as good as anyone else." When I first heard it I couldn't put a finger on why that felt wrong to me. But I think I can show you why; and as a nature lover I'm only a little sad that it's a city skyline.
 
 So, this is mine. Or as close as I can get to it without being overly dramatic on the internet.

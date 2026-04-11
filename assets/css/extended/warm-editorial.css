@@ -192,9 +192,11 @@ h1, h2, h3, h4, h5, h6,
     box-shadow: none;
 }
 
-/* First/featured entry card also gets rounded corners */
+/* First/featured entry card — reclaim the wasted vertical space PaperMod reserves */
 .first-entry {
     border-radius: var(--radius);
+    min-height: auto;
+    margin: var(--gap) 0;
 }
 
 /* ── Horizontal rules as ornamental dividers ── */
@@ -272,6 +274,17 @@ h1, h2, h3, h4, h5, h6,
 
 .assumed-audience-text p {
     margin: 0;
+}
+
+/* Stack label above text on phones — row layout collapses the text column */
+@media (max-width: 600px) {
+    .assumed-audience {
+        flex-direction: column;
+        gap: 0.35em;
+    }
+    .assumed-audience-label {
+        white-space: normal;
+    }
 }
 
 /* ── Subscribe shortcode ── */
@@ -420,81 +433,4 @@ h1, h2, h3, h4, h5, h6,
     }
 }
 
-/* ── Homepage hero subscribe (more prominent than post-bottom widget) ── */
-.subscribe-hero {
-    background: #f0e6d6;
-    border: 1px solid var(--tertiary);
-    border-radius: var(--radius);
-    padding: 3em 2em 2.5em;
-    margin: 2.5em 0 3em;
-    text-align: center;
-}
-
-.dark .subscribe-hero {
-    background: #231f1c;
-    border-color: var(--tertiary);
-}
-
-.subscribe-hero-inner {
-    max-width: 42em;
-    margin: 0 auto;
-}
-
-.subscribe-hero-label {
-    display: block;
-    font-family: var(--font-sans);
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 0.14em;
-    color: #8b4513;
-    margin-bottom: 0.9em;
-}
-
-.dark .subscribe-hero-label {
-    color: #d4a574;
-}
-
-.subscribe-hero-headline {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: 500;
-    font-size: 2.1rem;
-    line-height: 1.15;
-    color: var(--primary);
-    letter-spacing: -0.015em;
-    margin: 0 0 0.55em;
-}
-
-.subscribe-hero-description {
-    font-family: var(--font-serif);
-    color: var(--secondary);
-    font-size: 1.05rem;
-    line-height: 1.6;
-    max-width: 34em;
-    margin: 0 auto 1.6em;
-}
-
-.subscribe-hero .subscribe-form {
-    max-width: 30em;
-}
-
-.subscribe-hero .subscribe-form input[type="email"] {
-    background: #fdf6ec;
-}
-
-.dark .subscribe-hero .subscribe-form input[type="email"] {
-    background: #1a1816;
-}
-
-@media (max-width: 600px) {
-    .subscribe-hero {
-        padding: 2.2em 1.2em 1.8em;
-    }
-    .subscribe-hero-headline {
-        font-size: 1.55rem;
-    }
-    .subscribe-hero-description {
-        font-size: 1rem;
-    }
-}
+/* .subscribe-hero removed 2026-04-11 — signup is now a text link in extend_footer */

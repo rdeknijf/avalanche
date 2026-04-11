@@ -75,7 +75,6 @@ params:
 #        url: tags
 
   homeInfoParams:
-    Title: "Rutger de Knijf"
     Content: "Optimizing software delivery. Writing about infra, Python, cloud & AI agents."
 
   socialIcons:
