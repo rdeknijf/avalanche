@@ -4,10 +4,14 @@ date = 2026-03-03
 description = "How I built a personal AI assistant from markdown files, MCP servers, and Claude Code — and what it actually feels like to use one."
 draft = false
 [cover]
-image = "images/sculptures/venus_de_milo.jpg"
+image = "images/sculptures/venus_de_milo.webp"
 alt = "Venus de Milo (c. 130 BC)"
 caption = "Venus de Milo (c. 130 BC)"
 +++
+
+{{< audience >}}
+Anyone curious about AI assistants. Gets technical in places.
+{{< /audience >}}
 
 I finally got a secretary. Not a real one, alas, but still. Ever since I can remember I've wanted one.
 

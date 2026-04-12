@@ -6,7 +6,7 @@ draft = false
 aliases = ["/posts/grief-stages-of-agentic-coding/"]
 
 [cover]
-image = "images/sculptures/pieta.jpg"
+image = "images/sculptures/pieta.webp"
 alt = "Michelangelo, Pietà (1499)"
 caption = "Michelangelo, Pietà (1499)"
 +++

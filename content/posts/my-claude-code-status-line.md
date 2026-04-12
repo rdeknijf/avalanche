@@ -4,7 +4,7 @@ date = 2026-03-18
 description = "The full ccstatusline setup — config, custom widgets, and Model Intelligence score — that turns invisible AI state into glanceable awareness"
 draft = false
 [cover]
-image = "images/sculptures/hermes.jpg"
+image = "images/sculptures/hermes.webp"
 alt = "Hermes of Praxiteles (c. 340 BC)"
 caption = "Hermes of Praxiteles (c. 340 BC)"
 +++

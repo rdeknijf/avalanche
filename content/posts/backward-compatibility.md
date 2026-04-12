@@ -5,6 +5,10 @@ description = "Backward compatibility is a (sometimes) necessary evil that shoul
 draft = false
 +++
 
+{{< audience >}}
+Developers, mostly.
+{{< /audience >}}
+
 I recently had a colleague who suggested it might be a good idea to test our Python software against
 older versions of Python. And at first I was like: Yeah, good idea! It’s good practice, right?
 Support a whole range of versions! We see that all the time in the packages we fetch from Pypi.

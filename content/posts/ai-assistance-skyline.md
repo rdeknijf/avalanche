@@ -6,10 +6,14 @@ draft = false
 aliases = ["/posts/skills-skyline/"]
 
 [cover]
-image = "images/sculptures/tyche_antioch.jpg"
+image = "images/sculptures/tyche_antioch.webp"
 alt = "Tyche of Antioch (Roman copy, c. 300 BC)"
 caption = "Tyche of Antioch (Roman copy, c. 300 BC) - Personifying a city, with a literal skyline on her head."
 +++
+
+{{< audience >}}
+Anyone curious about AI and what it means for expertise.
+{{< /audience >}}
 
 <style>
 /* Post-specific mobile fixes — 2026-04-11 */

@@ -5,6 +5,10 @@ description = "On the cost of forgoing accelerators"
 draft = false
 +++
 
+{{< audience >}}
+Developers — but anyone who picks tools for a living will relate.
+{{< /audience >}}
+
 > "No, I don't use tool X. I do it manually with tool Y, because then I'll have more grip on what's happening."
 
 Examples of this are:

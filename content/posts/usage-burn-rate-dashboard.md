@@ -4,7 +4,7 @@ date = 2026-03-10
 description = "A status bar widget that proves you have enough tokens — so you stop worrying and start building"
 draft = false
 [cover]
-image = "images/sculptures/sleeping_ariadne.jpg"
+image = "images/sculptures/sleeping_ariadne.webp"
 alt = "Sleeping Ariadne (2nd century AD)"
 caption = "Sleeping Ariadne (2nd century AD)"
 +++

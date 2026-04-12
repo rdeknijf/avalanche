@@ -4,7 +4,7 @@ date = 2026-03-08
 description = "Why keeping your AI coding assistant's context under 40% makes it noticeably smarter"
 draft = false
 [cover]
-image = "images/sculptures/the_thinker.jpg"
+image = "images/sculptures/the_thinker.webp"
 alt = "Rodin, The Thinker (1904)"
 caption = "Rodin, The Thinker (1904)"
 +++
