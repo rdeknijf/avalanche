@@ -157,6 +157,149 @@ var Cityscape = (function() {
     }
   }
 
+  // ── Column hover highlighting ──
+  function cacheScene(canvas) {
+    var cache = canvas._skylineCacheCanvas;
+    if (!cache) {
+      cache = document.createElement('canvas');
+      cache.width = canvas.width;
+      cache.height = canvas.height;
+      canvas._skylineCacheCanvas = cache;
+    }
+    var cctx = cache.getContext('2d');
+    cctx.clearRect(0, 0, cache.width, cache.height);
+    cctx.drawImage(canvas, 0, 0);
+    return cache;
+  }
+
+  function columnBounds(d, p) {
+    var extra = Math.max(d.tealExtra || 0, d.blueExtra || 0);
+    var w = p.w + extra;
+    var x = p.x + p.w / 2 - w / 2;
+    return { x: x, w: w };
+  }
+
+  function columnHeight(d, scale) {
+    var t = (d.teal || 0) * scale;
+    var b = (d.blue || 0) * scale;
+    var g = (d.base || d.height || 0) * scale;
+    return Math.max(t, b, g);
+  }
+
+  function drawSkylineHighlight(canvas) {
+    var info = canvas._skylineInfo;
+    if (!info || !canvas._skylineCacheCanvas) return;
+    var ctx = canvas.getContext('2d');
+    var rc = rough.canvas(canvas);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(canvas._skylineCacheCanvas, 0, 0);
+
+    var idx = canvas._skylineHover;
+    if (idx == null || idx < 0 || idx >= info.positions.length) return;
+
+    var p = info.positions[idx];
+    var d = info.data[idx];
+    var bounds = columnBounds(d, p);
+    var topH = columnHeight(d, info.scale);
+    var groundY = info.groundY;
+    var dark = isDark();
+
+    // Pick a glow color from the column's top layer
+    var base = d.base || d.height || 0;
+    var blue = d.blue || 0;
+    var teal = d.teal || 0;
+    var glowColor;
+    if (teal > blue && teal > base) glowColor = COL.teal;
+    else if (blue > base) glowColor = COL.blue;
+    else glowColor = dark ? '#ffd88a' : '#ff9b3d'; // warm amber for gray-only
+
+    // Edge glow: hand-drawn rough rect with shadowBlur, layered for intensity
+    var gx = bounds.x, gy = groundY - topH, gw = bounds.w, gh = topH;
+    var roughOpts = {
+      stroke: glowColor, strokeWidth: 1.6, roughness: 1.8, bowing: 2,
+      fillStyle: 'solid', seed: 600 + idx,
+    };
+    ctx.save();
+    ctx.shadowColor = glowColor;
+    ctx.shadowBlur = 30; rc.rectangle(gx, gy, gw, gh, roughOpts);
+    ctx.shadowBlur = 45; rc.rectangle(gx, gy, gw, gh, roughOpts);
+    ctx.shadowBlur = 18; rc.rectangle(gx, gy, gw, gh, roughOpts);
+    ctx.restore();
+
+    // Interior brighten: additive wash over the column
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.fillStyle = glowColor;
+    ctx.globalAlpha = dark ? 0.18 : 0.22;
+    ctx.fillRect(gx, gy, gw, gh);
+    ctx.restore();
+
+    // Re-draw the label: bold and darker, with a bg rect masking the original
+    var cx = p.x + p.w / 2;
+    var bg;
+    try { bg = getComputedStyle(document.body).backgroundColor; } catch (e) {}
+    if (!bg || bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') {
+      bg = dark ? '#1a1816' : '#fdf6ec';
+    }
+    ctx.save();
+    ctx.translate(cx, groundY + 10);
+    ctx.rotate(Math.PI / 3);
+    ctx.font = 'bold 12px "Comic Sans MS", "Chalkboard SE", cursive';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    var metrics = ctx.measureText(d.skill);
+    var pad = 3;
+    ctx.fillStyle = bg;
+    ctx.fillRect(-pad, -pad, metrics.width + pad * 2, 14 + pad * 2);
+    ctx.fillStyle = dark ? '#f0e8dc' : '#1a1816';
+    ctx.fillText(d.skill, 0, 0);
+    ctx.restore();
+  }
+
+  function setupSkylineHover(canvasId) {
+    var canvas = document.getElementById(canvasId);
+    if (!canvas || canvas._skylineHoverInstalled) return;
+    canvas._skylineHoverInstalled = true;
+    canvas._skylineHover = -1;
+
+    canvas.addEventListener('mousemove', function(e) {
+      var info = canvas._skylineInfo;
+      if (!info) return;
+      var rect = canvas.getBoundingClientRect();
+      var scaleX = canvas.width / rect.width;
+      var scaleY = canvas.height / rect.height;
+      var mx = (e.clientX - rect.left) * scaleX;
+      var my = (e.clientY - rect.top) * scaleY;
+
+      var hit = -1;
+      if (my > 0 && my < info.groundY + 2) {
+        for (var i = 0; i < info.positions.length; i++) {
+          var b = columnBounds(info.data[i], info.positions[i]);
+          if (mx >= b.x && mx <= b.x + b.w) { hit = i; break; }
+        }
+      }
+      // Don't highlight a column while the cursor is over the celestial body
+      if (hit >= 0 && canvas._celestialHit) {
+        var dx = mx - canvas._celestialHit.cx;
+        var dy = my - canvas._celestialHit.cy;
+        if (dx * dx + dy * dy <= canvas._celestialHit.r * canvas._celestialHit.r) {
+          hit = -1;
+        }
+      }
+      if (hit !== canvas._skylineHover) {
+        canvas._skylineHover = hit;
+        drawSkylineHighlight(canvas);
+      }
+    });
+
+    canvas.addEventListener('mouseleave', function() {
+      if (canvas._skylineHover !== -1) {
+        canvas._skylineHover = -1;
+        drawSkylineHighlight(canvas);
+      }
+    });
+  }
+
   // Set up click-to-toggle-theme on canvas celestial body
   function setupCelestialClick(canvasId) {
     var canvas = document.getElementById(canvasId);
@@ -248,11 +391,16 @@ var Cityscape = (function() {
       rc.line(startX - 10, groundY, x + 10, groundY, { stroke: COL.ground, strokeWidth: 2, roughness: 0.8 });
       drawLabels(ctx, positions, data, groundY);
       if (opts.stickFigure !== false) drawStickFigure(rc, startX - 22, groundY);
+
+      canvas._skylineInfo = { positions: positions, data: data, groundY: groundY, scale: scale };
+      canvas._skylineHover = -1;
+      cacheScene(canvas);
     }
 
     doRender();
     registerRender(doRender);
     setupCelestialClick(canvasId);
+    setupSkylineHover(canvasId);
     observeTheme();
   }
 
@@ -346,12 +494,26 @@ var Cityscape = (function() {
       rc.line(startX - 10, groundY, x + 10, groundY, { stroke: COL.ground, strokeWidth: 2, roughness: 0.8 });
       drawLabels(ctx, positions, data, groundY);
       if (opts.stickFigure !== false) drawStickFigure(rc, startX - 22, groundY);
+
+      canvas._skylineInfo = { positions: positions, data: data, groundY: groundY, scale: scale };
+      canvas._skylineHover = -1;
+      cacheScene(canvas);
     }
 
     doRender();
     registerRender(doRender);
     setupCelestialClick(canvasId);
+    setupSkylineHover(canvasId);
     observeTheme();
+  }
+
+  function attachHover(canvasId, info) {
+    var canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    canvas._skylineInfo = info;
+    canvas._skylineHover = -1;
+    cacheScene(canvas);
+    setupSkylineHover(canvasId);
   }
 
   return {
@@ -360,5 +522,6 @@ var Cityscape = (function() {
     renderLayered: renderLayered,
     drawStars: drawStars,
     drawGlow: drawGlow,
+    attachHover: attachHover,
   };
 })();

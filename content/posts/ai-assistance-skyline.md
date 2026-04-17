@@ -203,6 +203,7 @@ function miniSkyline(id, data, seed) {
     ctx.save(); ctx.translate(cx,groundY+8); ctx.rotate(Math.PI/3);
     ctx.textAlign='left'; ctx.textBaseline='top'; ctx.fillText(d.skill,0,0); ctx.restore();
   });
+  Cityscape.attachHover(id, {positions:positions, data:data, groundY:groundY, scale:1});
 }
 miniSkyline('bro1',[
   {skill:'Banking',height:160,width:48},{skill:'Soccer',height:140,width:44},
