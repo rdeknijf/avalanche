@@ -88,7 +88,7 @@ h1, h2, h3, h4, h5, h6,
 
 /* Extra breathing room after the drop cap paragraph */
 .post-content > p:first-of-type {
-    margin-bottom: 2em;
+    margin-bottom: var(--paragraph-gap);
 }
 
 /* Disable drop cap on very narrow screens where it causes bad wrapping */
@@ -132,37 +132,48 @@ h1, h2, h3, h4, h5, h6,
     box-shadow: none;
 }
 
-/* ── Spacing — more generous ── */
+/* ── Spacing — uniform paragraph gap ── */
 .post-content {
+    --paragraph-gap: 1.375rem;
     line-height: 1.8;
 }
 
 .post-content p {
-    margin-bottom: 1.4em;
+    margin-bottom: var(--paragraph-gap);
 }
 
-.post-content h2 {
-    margin-top: 2.5em;
-    margin-bottom: 0.8em;
-}
-
+.post-content h2,
 .post-content h3 {
-    margin-top: 2em;
-    margin-bottom: 0.6em;
+    margin-top: var(--paragraph-gap);
+    margin-bottom: var(--paragraph-gap);
 }
 
 /* ── Blockquotes — warm and editorial ── */
 .post-content blockquote {
-    border-left: 3px solid #c4a882;
+    border-left: none;
     background: transparent;
-    padding-left: 1.5em;
+    padding: 0.8em 1.5em 0.8em 2.8em;
+    margin: 1.5em 0;
     margin-left: 0;
     font-style: italic;
     color: var(--secondary);
+    position: relative;
 }
 
-.dark .post-content blockquote {
-    border-left-color: #7a6040;
+.post-content blockquote::before {
+    content: "\201C";
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: 3.5em;
+    font-style: normal;
+    color: #c4a882;
+    position: absolute;
+    left: 0;
+    top: -0.1em;
+    line-height: 1;
+}
+
+.dark .post-content blockquote::before {
+    color: #7a6040;
 }
 
 /* ── Code blocks — warm dark ── */
