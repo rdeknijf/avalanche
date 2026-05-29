@@ -135,6 +135,10 @@ menu:
       name: About
       url: /about/
       weight: 10
+    - identifier: subscribe
+      name: Subscribe
+      url: /subscribe/
+      weight: 20
 
 markup:
   goldmark:

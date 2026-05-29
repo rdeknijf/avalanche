@@ -1,0 +1,9 @@
+{{- if or .IsHome (and .File (eq .Section "posts")) }}
+<aside class="subscribe-sidebar" aria-label="Subscribe">
+    <div class="subscribe-sidebar-inner">
+        <p class="subscribe-sidebar-heading">Stay in the loop</p>
+        <p class="subscribe-sidebar-text">New essays on infra, Python &amp; AI agents. No spam.</p>
+        <a href="https://buttondown.com/rdeknijf" class="subscribe-sidebar-btn" rel="noopener">Subscribe</a>
+    </div>
+</aside>
+{{- end }}

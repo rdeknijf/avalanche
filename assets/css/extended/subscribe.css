@@ -1,0 +1,125 @@
+/* ── Subscribe Sidebar (sticky margin note on posts, desktop only) ── */
+
+.subscribe-sidebar {
+    display: none;
+}
+
+@media (min-width: 1280px) {
+    .subscribe-sidebar {
+        display: block;
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        right: calc((100vw - 720px) / 2 - 220px);
+        width: 180px;
+        font-family: var(--font-sans);
+        font-size: 13px;
+        color: var(--secondary);
+        text-align: left;
+    }
+
+    .subscribe-sidebar-inner {
+        border-left: 2px solid var(--tertiary);
+        padding-left: 14px;
+    }
+
+    .subscribe-sidebar-heading {
+        font-weight: 600;
+        color: var(--primary);
+        margin: 0 0 6px;
+        font-size: 14px;
+    }
+
+    .subscribe-sidebar-text {
+        margin: 0 0 12px;
+        line-height: 1.4;
+    }
+
+    .subscribe-sidebar-btn {
+        display: inline-block;
+        padding: 5px 14px;
+        border: 1px solid #8b4513;
+        color: #8b4513;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        transition: background 0.15s, color 0.15s;
+    }
+
+    .subscribe-sidebar-btn:hover {
+        background: #8b4513;
+        color: #fff;
+    }
+
+    .dark .subscribe-sidebar-btn {
+        border-color: #d4a574;
+        color: #d4a574;
+    }
+
+    .dark .subscribe-sidebar-btn:hover {
+        background: #d4a574;
+        color: #1a1816;
+    }
+}
+
+/* ── Subscribe Page Form ── */
+
+.subscribe-page-form {
+    display: flex;
+    gap: 8px;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+}
+
+.subscribe-page-form input[type="email"] {
+    flex: 1;
+    min-width: 220px;
+    max-width: 320px;
+    padding: 10px 14px;
+    border: 1px solid var(--tertiary);
+    border-radius: 4px;
+    font-size: 16px;
+    font-family: var(--font-sans);
+    background: var(--theme);
+    color: var(--primary);
+}
+
+.subscribe-page-form input[type="email"]:focus {
+    outline: none;
+    border-color: #8b4513;
+}
+
+.subscribe-page-form button {
+    padding: 10px 24px;
+    background: #8b4513;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.subscribe-page-form button:hover {
+    background: #6d3610;
+}
+
+.dark .subscribe-page-form input[type="email"] {
+    border-color: var(--tertiary);
+}
+
+.dark .subscribe-page-form input[type="email"]:focus {
+    border-color: #d4a574;
+}
+
+.dark .subscribe-page-form button {
+    background: #d4a574;
+    color: #1a1816;
+}
+
+.dark .subscribe-page-form button:hover {
+    background: #c49564;
+}
