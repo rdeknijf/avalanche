@@ -478,9 +478,10 @@ h1, h2, h3, h4, h5, h6,
     color: #d4a574;
 }
 
-/* ── End-of-post "Work with me" card ── */
+/* ── Site-wide "Work with me" card (footer) ── */
 .work-box {
-    margin: 2.5em 0 2em;
+    max-width: 40em;
+    margin: 3em auto 1.5em;
 }
 
 .work-action {
