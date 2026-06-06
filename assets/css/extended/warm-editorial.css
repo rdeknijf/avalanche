@@ -477,3 +477,45 @@ h1, h2, h3, h4, h5, h6,
 .dark .post-subscribe a:hover {
     color: #d4a574;
 }
+
+/* ── End-of-post "Work with me" card ── */
+.work-box {
+    margin: 2.5em 0 2em;
+}
+
+.work-action {
+    margin: 0.4em 0 0;
+    text-align: center;
+}
+
+.work-button {
+    display: inline-block;
+    padding: 0.65em 1.5em;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #fdf6ec;
+    background: #8b4513;
+    border: 1px solid #8b4513;
+    border-radius: var(--radius);
+    text-decoration: none;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.work-button:hover {
+    background: #6f3610;
+    border-color: #6f3610;
+    color: #fdf6ec;
+}
+
+.dark .work-button {
+    color: #1a1816;
+    background: #d4a574;
+    border-color: #d4a574;
+}
+
+.dark .work-button:hover {
+    background: #c49560;
+    border-color: #c49560;
+    color: #1a1816;
+}
