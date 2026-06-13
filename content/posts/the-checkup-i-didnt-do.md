@@ -11,7 +11,7 @@ caption = "Laocoön and His Sons (Hellenistic marble, Vatican Museums)"
 +++
 
 {{< audience >}}
-Anyone whose tools get smarter in sudden jumps, and who has a backlog of projects they've stopped looking at closely. Doubly so if you've ever rationed access to something good instead of just using it.
+Anyone using AI to build/maintain many projects; technical or not.
 {{< /audience >}}
 
 I've been telling people to do this for a while now. Then I got the exact chance to do it myself, and I didn't. And thus follows a story of regret and resolve:
@@ -24,7 +24,7 @@ So in those three days that I had Anthropic's Fable model at my fingertips, I of
 
 Nope... I thought three things: 1) It's finally here! 2) Wow, this is smart! 3) Damn, it's expensive, better conserve my weekly usage...
 
-I did (probably — the PRs are still pending) clear a massive multi-blocker problem in Pants (an open-source build system for monorepos) that's been stumping people for years. And I'm super proud of that, and gained another level of existential AI-dread in the process about the fact that this was even possible. But I never got to my checkup! I thought we'd have it forever, maybe it'd get more expensive, but they wouldn't just pull it. Right? Then politics got in the way and the rest is history.
+I did (probably — the PRs are still pending) clear a massive multi-blocker problem in [Pants](https://www.pantsbuild.org/) (an open-source build system for monorepos) that's been stumping people for years. And I'm super proud of that, and gained another level of existential AI-dread in the process about the fact that this was even possible. But I never got to my checkup! I thought we'd have it forever, maybe it'd get more expensive, but they wouldn't just pull it. Right? Then politics got in the way and the rest is history.
 
 But, next time... I'll be ready.
 
