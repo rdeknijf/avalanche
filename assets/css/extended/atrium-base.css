@@ -1,0 +1,274 @@
+/* ============================================================
+   Atrium redesign — foundation
+   Design tokens, fonts, base typography, site chrome.
+   Dark-first (design spec); light mode keeps the warm parchment
+   palette (contrast-safe) with the same roles, only a darker accent.
+   Fonts are loaded via <link> in extend_head.html.
+   ============================================================ */
+
+/* ── Font families ── */
+:root {
+    --font-serif: 'Newsreader', 'Georgia', 'Times New Roman', serif;
+    --font-sans:  'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono:  'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+}
+
+/* ── Light mode palette (warm parchment; roles mirror dark) ── */
+:root {
+    /* semantic tokens */
+    --bg:          #fdf6ec;
+    --bg-sunken:   #f2e8d6;
+    --bg-raised:   #f6eddd;
+    --bg-card:     #fbf3e6;
+    --text:        #2f2417;
+    --text-body:   #3d2e1e;
+    --text-muted:  #7a6652;
+    --text-faint:  #8a7963;
+    --text-meta:   #9a8b76;
+    --text-meta-2: #8a7963;
+    --accent:      #8b4513;   /* saddle brown — contrast-safe on parchment */
+    --accent-hover:#6f3610;
+    --accent-on:   #fdf6ec;
+    --rule:        #e4d5c1;
+    --rule-strong: #dcc9b0;
+
+    /* skyline semantic colours (swatch fixed; label darkened for light bg) */
+    --sky-gray:  #8b8b8b;  --sky-gray-label:  #5a5346;
+    --sky-blue:  #5B8DEF;  --sky-blue-label:  #2f5fce;
+    --sky-teal:  #34C7B5;  --sky-teal-label:  #12897a;
+
+    /* PaperMod core vars mapped onto the palette (the theme's own CSS uses these) */
+    --theme:          var(--bg);
+    --entry:          var(--bg-card);
+    --primary:        var(--text-body);
+    --secondary:      var(--text-muted);
+    --tertiary:       var(--rule);
+    --content:        var(--text-body);
+    --border:         var(--rule);
+    --code-bg:        #f0e6d6;
+    --code-block-bg:  #2b2520;
+    --hljs-bg:        #2b2520;
+    --radius:         8px;
+
+    --gap: 24px;
+}
+
+/* ── Dark mode palette (the design's primary target) ── */
+.dark {
+    --bg:          #181612;
+    --bg-sunken:   #0f0e0b;
+    --bg-raised:   #201d17;
+    --bg-card:     #211e18;
+    --text:        #ECE6DA;
+    --text-body:   #d6cfc1;
+    --text-muted:  #a8a092;
+    --text-faint:  #9a9284;
+    --text-meta:   #6f685c;
+    --text-meta-2: #7d7566;
+    --accent:      #C8A96A;   /* bronze */
+    --accent-hover:#b8985a;
+    --accent-on:   #181612;
+    --rule:        rgba(255,255,255,.07);
+    --rule-strong: rgba(255,255,255,.08);
+
+    --sky-gray:  #8b8b8b;  --sky-gray-label:  #cfcabf;
+    --sky-blue:  #5B8DEF;  --sky-blue-label:  #9ab8f7;
+    --sky-teal:  #34C7B5;  --sky-teal-label:  #5FD9C8;
+
+    --theme:          var(--bg);
+    --entry:          var(--bg-card);
+    --primary:        var(--text);
+    --secondary:      var(--text-muted);
+    --tertiary:       var(--rule);
+    --content:        var(--text-body);
+    --border:         var(--rule);
+    --code-bg:        #2a2420;
+    --code-block-bg:  #0f0e0b;
+    --hljs-bg:        #0f0e0b;
+}
+
+/* ── Base ── */
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--text-body);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6,
+.post-title, .entry-title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    line-height: 1.12;
+}
+
+/* Let each template own its column width (homepage 1280, reading 640/760) */
+.main {
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* ── Links inside prose ── */
+.post-content a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    box-shadow: none;
+    transition: text-decoration-color .15s ease;
+}
+.post-content a:hover { text-decoration-color: var(--accent); }
+
+/* Kill PaperMod's link underline-on-hover box-shadow for nav/meta links */
+#menu a, .breadcrumbs a, .footer a, .post-meta a { box-shadow: none; }
+
+/* ── Mono label helper ── */
+.mono-eyebrow {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    color: var(--text-meta-2);
+    font-size: 11px;
+    letter-spacing: .16em;
+}
+
+/* ============================================================
+   Header / nav chrome
+   ============================================================ */
+.header { max-width: none; background: var(--bg); border-bottom: 1px solid var(--rule); }
+
+.nav {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 26px 56px;
+    line-height: 1;
+}
+
+.nav .logo a {
+    font-family: var(--font-serif);
+    font-size: 21px;
+    font-weight: 500;
+    letter-spacing: .01em;
+    color: var(--text);
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.nav-links a {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color .15s ease;
+}
+.nav-links a:hover, .nav-links a .active { color: var(--text); }
+
+/* Circular theme toggle with bronze glyph */
+#theme-toggle {
+    width: 30px; height: 30px;
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 0; margin: 0;
+    border: 1px solid var(--rule-strong);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--accent);
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease;
+}
+#theme-toggle:hover { border-color: var(--accent); }
+#theme-toggle svg { width: 15px; height: 15px; }
+#theme-toggle #sun { display: none; }
+.dark #theme-toggle #sun  { display: inline; }
+.dark #theme-toggle #moon { display: none; }
+
+/* ============================================================
+   Footer chrome
+   ============================================================ */
+.footer {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 24px 56px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-meta);
+}
+.footer-social { display: flex; gap: 18px; flex-wrap: wrap; }
+.footer a { color: var(--text-meta); text-decoration: none; transition: color .15s ease; }
+.footer a:hover { color: var(--text); }
+
+/* ============================================================
+   Reading-progress bar (posts only)
+   ============================================================ */
+.read-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px; width: 100%;
+    background: rgba(127,127,127,.14);
+    z-index: 60;
+}
+.read-progress-fill {
+    height: 100%; width: 0;
+    background: var(--accent);
+    transition: width .05s linear;
+}
+
+/* ── Back-to-top button, warm ── */
+.top-link {
+    background: var(--bg-raised);
+    color: var(--accent);
+    border: 1px solid var(--rule-strong);
+}
+
+/* ============================================================
+   Cover images — HARD 720×160 (4.5:1) frame everywhere
+   ============================================================ */
+.entry-cover, .cover { margin: 0; text-align: center; }
+.entry-cover img, .cover img {
+    width: 100%;
+    aspect-ratio: 720 / 160;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    border-radius: var(--radius);
+    background: var(--bg-sunken);
+}
+
+/* ============================================================
+   Responsive chrome
+   ============================================================ */
+@media (max-width: 900px) {
+    .nav   { padding: 20px 24px; }
+    .footer { padding: 20px 24px; flex-direction: column; align-items: flex-start; gap: 12px; }
+}
+@media (max-width: 520px) {
+    .nav-right { gap: 18px; }
+    .nav-links { gap: 18px; }
+}

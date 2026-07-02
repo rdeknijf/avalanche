@@ -1,0 +1,16 @@
+{{- /* Inline subscribe pill — email field + bronze button. Wired to Buttondown.
+       Params: id (unique suffix for the input's id/label), note (mono reassurance text). */ -}}
+{{- $id := .id | default "inline" }}
+{{- $note := cond (isset . "note") .note "New essays. No spam." }}
+<div class="subscribe-inline">
+  <form class="subscribe-inline-form"
+        action="https://buttondown.com/api/emails/embed-subscribe/rdeknijf"
+        method="post"
+        target="popupwindow"
+        onsubmit="window.open('https://buttondown.com/rdeknijf', 'popupwindow')">
+    <label for="bd-{{ $id }}" class="visually-hidden">Email address</label>
+    <input type="email" name="email" id="bd-{{ $id }}" placeholder="you@email.com" autocomplete="email" required>
+    <button type="submit">Subscribe</button>
+  </form>
+  {{- with $note }}<span class="subscribe-inline-note">{{ . }}</span>{{ end }}
+</div>

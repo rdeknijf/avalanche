@@ -1,0 +1,9 @@
+{{- /* Inline whisper (author's default): serif italic, dimmed, bronze marks.
+       Usage: {{< whisper >}}which I digress{{< /whisper >}}
+              {{< whisper style="paren" >}}apologies to my Latin teacher{{< /whisper >}}  */ -}}
+{{- $inner := .Inner | .Page.RenderString (dict "display" "inline") -}}
+{{- if eq (.Get "style") "paren" -}}
+<span class="whisper"><span class="whisper-mark"> (</span>{{ $inner }}<span class="whisper-mark">)</span></span>
+{{- else -}}
+<span class="whisper"><span class="whisper-mark"> </span>{{ $inner }}<span class="whisper-mark"> </span></span>
+{{- end -}}

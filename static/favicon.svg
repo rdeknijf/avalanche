@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <style>
+    .bg { fill: #fdf6ec; }
+    .fg { fill: #8b4513; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #181612; }
+      .fg { fill: #c8a96a; }
+    }
+  </style>
+  <rect class="bg" width="32" height="32" rx="7"/>
+  <text class="fg" x="16" y="23" text-anchor="middle"
+        font-family="Newsreader, Georgia, 'Times New Roman', serif"
+        font-size="22" font-weight="500">R</text>
+</svg>

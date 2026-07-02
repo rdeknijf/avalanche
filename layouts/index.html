@@ -1,0 +1,74 @@
+{{- define "main" }}
+{{- $pages := where site.RegularPages "Type" "in" (site.Params.mainSections | default (slice "posts")) }}
+{{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true" }}
+{{- $paginator := .Paginate $pages }}
+{{- $onFirst := eq $paginator.PageNumber 1 }}
+
+<div class="atrium">
+
+  {{- if $onFirst }}
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <p class="hero-eyebrow">Infra · Python · Cloud · AI Agents</p>
+    <h1 class="hero-title">Optimizing software delivery<br><span class="accent-italic">and the agents</span> now doing half of it.</h1>
+    <p class="hero-sub">Field notes on infrastructure, Python, cloud, and the AI-agent systems I build and break for a living.</p>
+    {{- partial "subscribe_inline.html" (dict "id" "hero") }}
+  </section>
+  {{- end }}
+
+  <!-- ── Latest rule ── -->
+  <div class="section-rule">
+    <span class="section-rule-label">{{ if $onFirst }}Latest{{ else }}Posts · page {{ $paginator.PageNumber }}{{ end }}</span>
+    <span class="section-rule-line"></span>
+  </div>
+
+  {{- range $index, $page := $paginator.Pages }}
+    {{- if and $onFirst (eq $index 0) }}
+    <!-- ── Feature post ── -->
+    <article class="feature">
+      {{- with $page.Params.cover.image }}
+      <a class="feature-cover cover" href="{{ $page.Permalink }}" aria-label="{{ $page.Title }}">
+        <img loading="eager" src="{{ . | absURL }}" alt="{{ $page.Params.cover.alt | default $page.Title }}">
+      </a>
+      {{- end }}
+      <div class="feature-body">
+        {{- with $page.Params.assumedAudience }}<p class="feature-eyebrow">Assumed audience: {{ . }}</p>{{ end }}
+        <h2 class="feature-title"><a href="{{ $page.Permalink }}">{{ $page.Title }}</a></h2>
+        <p class="feature-excerpt">{{ with $page.Description }}{{ . }}{{ else }}{{ $page.Summary | plainify | htmlUnescape }}{{ if $page.Truncated }}&hellip;{{ end }}{{ end }}</p>
+        <p class="card-meta"><span>{{ $page.Date.Format "Jan 2" }}</span><span>·</span><span>{{ $page.ReadingTime }} min read</span></p>
+      </div>
+    </article>
+    {{- end }}
+  {{- end }}
+
+  <!-- ── Grid of remaining posts ── -->
+  <div class="post-grid">
+    {{- range $index, $page := $paginator.Pages }}
+      {{- if not (and $onFirst (eq $index 0)) }}
+      <article class="grid-card">
+        {{- with $page.Params.cover.image }}
+        <a class="grid-cover cover" href="{{ $page.Permalink }}" aria-label="{{ $page.Title }}">
+          <img loading="lazy" src="{{ . | absURL }}" alt="{{ $page.Params.cover.alt | default $page.Title }}">
+        </a>
+        {{- end }}
+        <p class="card-meta card-meta--eyebrow"><span>{{ $page.Date.Format "Jan 2" }}</span><span>·</span><span>{{ $page.ReadingTime }} min</span></p>
+        <h3 class="grid-title"><a href="{{ $page.Permalink }}">{{ $page.Title }}</a></h3>
+        <p class="grid-excerpt">{{ with $page.Description }}{{ . }}{{ else }}{{ $page.Summary | plainify | htmlUnescape }}{{ if $page.Truncated }}&hellip;{{ end }}{{ end }}</p>
+      </article>
+      {{- end }}
+    {{- end }}
+  </div>
+
+  {{- if gt $paginator.TotalPages 1 }}
+  <nav class="atrium-pagination">
+    {{- if $paginator.HasPrev }}<a class="prev" href="{{ $paginator.Prev.URL | absURL }}">&laquo;&nbsp;Newer</a>{{ end }}
+    <span class="page-count">{{ $paginator.PageNumber }} / {{ $paginator.TotalPages }}</span>
+    {{- if $paginator.HasNext }}<a class="next" href="{{ $paginator.Next.URL | absURL }}">Older&nbsp;&raquo;</a>{{ end }}
+  </nav>
+  {{- end }}
+
+  <!-- ── Work with me ── -->
+  {{- partial "cta_line.html" . }}
+
+</div>
+{{- end }}

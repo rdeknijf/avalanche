@@ -1,0 +1,6 @@
+{{- /* Optional/collapsible tangent (interactive): a dotted phrase with a bronze ✳ the
+       reader can open. Inline marker (a <details> would break the markdown paragraph),
+       note drops to a block below when opened. Use only for tangents some readers should skip.
+       Usage: {{< tangent phrase="Software Development Lifecycle" >}}…the hidden note.{{< /tangent >}} */ -}}
+{{- $inner := .Inner | .Page.RenderString (dict "display" "inline") -}}
+<span class="tangent"><span class="tangent-phrase">{{ .Get "phrase" }}</span><span class="tangent-marker" role="button" tabindex="0" title="Show aside" aria-expanded="false" onclick="var t=this.closest('.tangent');var o=t.classList.toggle('open');this.setAttribute('aria-expanded',o)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}">&#10035;</span><span class="tangent-note"><span class="tangent-note-mark">&#10035;</span>{{ $inner }}</span></span>

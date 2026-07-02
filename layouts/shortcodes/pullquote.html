@@ -1,0 +1,3 @@
+{{- /* Pull quote — Newsreader italic. Wrap an emphasis word in *stars* for bronze.
+       Usage: {{< pullquote >}}Where does competence stop and *capability* start?{{< /pullquote >}} */ -}}
+<blockquote class="pullquote">{{ .Inner | .Page.RenderString (dict "display" "inline") }}</blockquote>

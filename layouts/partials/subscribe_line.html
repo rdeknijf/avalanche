@@ -1,3 +1,17 @@
-<aside class="post-subscribe">
-    <p>Like this? <a href="https://buttondown.com/rdeknijf" rel="noopener">Subscribe by email</a> &mdash; new essays when they&rsquo;re published, nothing else.</p>
-</aside>
+{{- /* End-of-post subscribe card + share row (reading view). */ -}}
+{{- $url := .Permalink }}
+{{- $title := .Title }}
+<div class="reading-subscribe">
+  <div class="reading-subscribe-card">
+    <p class="reading-subscribe-title">Like this?</p>
+    <p class="reading-subscribe-desc">New essays on infra, Python &amp; AI agents when they&rsquo;re published. Nothing else.</p>
+    {{- partial "subscribe_inline.html" (dict "id" "post" "note" "") }}
+  </div>
+  <div class="reading-share">
+    <span>Share &mdash;</span>
+    <a href="https://x.com/intent/tweet?url={{ $url }}&text={{ $title }}" rel="noopener" target="_blank">X</a>
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ $url }}" rel="noopener" target="_blank">LinkedIn</a>
+    <a href="https://news.ycombinator.com/submitlink?u={{ $url }}&t={{ $title }}" rel="noopener" target="_blank">HN</a>
+    <a href="https://www.reddit.com/submit?url={{ $url }}&title={{ $title }}" rel="noopener" target="_blank">Reddit</a>
+  </div>
+</div>

@@ -1,0 +1,147 @@
+/* ============================================================
+   Atrium redesign — aside system (four reusable treatments)
+   Shortcodes: whisper, sidenote, scribble, tangent.
+   ============================================================ */
+
+/* Sidenote numbering scoped per article (increment once, on the marker) */
+.reading-body { counter-reset: sidenote; }
+
+/* ── #2 Inline whisper (default) ── */
+.whisper {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 16px;
+    color: var(--text-faint);
+}
+.whisper .whisper-mark { color: var(--accent); font-style: normal; }
+
+/* ── #1 Margin sidenote (Tufte) ── */
+.sidenote-wrap { position: relative; }
+.sidenote-marker {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--accent);
+    padding-left: 2px;
+    counter-increment: sidenote;
+    vertical-align: super;
+    line-height: 0;
+}
+.sidenote-marker::after { content: counter(sidenote); }
+
+.sidenote {
+    float: right;
+    clear: right;
+    width: 200px;
+    margin-right: -232px;   /* push into the right margin (640 column + gutter) */
+    margin-bottom: 1em;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--text-faint);
+    position: relative;
+    text-align: left;
+}
+.sidenote::before {
+    content: counter(sidenote);
+    counter-increment: none;
+    font-family: var(--font-mono);
+    font-style: normal;
+    color: var(--accent);
+    font-size: 10px;
+    position: absolute;
+    left: -14px;
+    top: 3px;
+}
+
+/* Below the width where the right margin can hold the note (needs ~1104px),
+   fold it inline right after its paragraph text instead of into the margin. */
+@media (max-width: 1200px) {
+    .sidenote {
+        float: none;
+        width: auto;
+        margin: 12px 0;
+        display: block;
+        padding-left: 16px;
+        border-left: 2px solid var(--accent);
+    }
+    .sidenote::before { position: static; margin-right: 8px; }
+}
+
+/* ── #3 Margin scribble (floated note card) ── */
+.scribble {
+    float: right;
+    width: 210px;
+    margin: 4px 0 14px 30px;
+    padding-left: 16px;
+    border-left: 2px solid var(--accent);
+    display: block;
+}
+.scribble-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: .14em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+.scribble-note {
+    display: block;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--text-faint);
+}
+@media (max-width: 720px) {
+    .scribble { float: none; width: auto; margin: 18px 0; }
+}
+
+/* ── #4 Collapsible tangent (interactive, inline JS toggle) ── */
+.tangent { display: inline; }
+.tangent-phrase { border-bottom: 1px dotted color-mix(in srgb, var(--accent) 60%, transparent); }
+.tangent-marker {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 17px; height: 17px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--accent) 16%, transparent);
+    color: var(--accent);
+    font-size: 11px;
+    margin-left: 5px;
+    cursor: pointer;
+    vertical-align: middle;
+    user-select: none;
+}
+.tangent-note {
+    display: none;
+    margin: 16px 0;
+    max-width: 560px;
+    padding: 16px 18px;
+    background: var(--bg-raised);
+    border-radius: 5px;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 15.5px;
+    line-height: 1.55;
+    color: var(--text-muted);
+}
+.tangent.open .tangent-note { display: block; }
+.tangent-note-mark { color: var(--accent); font-style: normal; margin-right: 10px; }
+
+/* ── Pull quote shortcode (also styled as blockquote in reading-body) ── */
+.pullquote {
+    border: none;
+    background: transparent;
+    padding: 0 0 0 4px;
+    margin: 34px 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 27px;
+    line-height: 1.35;
+    color: var(--text);
+}
+.pullquote em { color: var(--accent); font-style: italic; }

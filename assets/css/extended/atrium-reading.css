@@ -1,0 +1,261 @@
+/* ============================================================
+   Atrium redesign — reading view (single post)
+   Column widths: text 640, hero 760, in-body images 560.
+   ============================================================ */
+
+.reading { padding-bottom: 8px; }
+
+/* ── Title block ── */
+.reading-head {
+    max-width: 784px;  /* 720 text + 2×32 padding */
+    margin: 0 auto;
+    padding: 64px 32px 0;
+}
+.reading-head--plain { padding-top: 72px; padding-bottom: 8px; }
+
+.reading-breadcrumb {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    color: var(--text-meta-2);
+    text-transform: uppercase;
+    margin-bottom: 26px;
+}
+.reading-breadcrumb a { color: var(--text-meta-2); text-decoration: none; }
+.reading-breadcrumb a:hover { color: var(--text); }
+
+.reading-title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(32px, 6vw, 50px);
+    line-height: 1.06;
+    letter-spacing: -.015em;
+    margin: 0 0 16px;
+    color: var(--text);
+}
+
+.reading-dek {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.4;
+    color: var(--text-muted);
+    margin: 0 0 26px;
+}
+
+.reading-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-meta);
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--rule);
+}
+.reading-suggest { margin-left: auto; color: var(--accent); text-decoration: none; }
+.reading-suggest:hover { text-decoration: underline; }
+
+/* ── Hero image (720×160) ── */
+.reading-hero {
+    max-width: 904px;  /* 840 image (text 720 + 120 overhang) + 2×32 padding */
+    margin: 44px auto 0;
+    padding: 0 32px;
+}
+.reading-hero img {
+    width: 100%;
+    aspect-ratio: 720 / 160;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    border-radius: var(--radius);
+    background: var(--bg-sunken);
+    filter: grayscale(.12) contrast(1.02);
+}
+.reading-hero figcaption {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--text-meta-2);
+    margin-top: 12px;
+    text-align: center;
+    font-style: normal;
+}
+
+/* ── Body column ── */
+.reading-body {
+    max-width: 784px;  /* 720 text + 2×32 padding */
+    margin: 48px auto 0;
+    padding: 0 32px;
+    font-family: var(--font-sans);
+    font-size: 18px;
+    line-height: 1.72;
+    color: var(--text-body);
+}
+.reading-body p { margin: 0 0 26px; }
+
+/* ── Drop cap: classic sunken initial on first body paragraph (posts only) ── */
+.is-post .reading-body > p:first-of-type::first-letter {
+    float: left;
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 5em;
+    line-height: 0.7;
+    margin: 7px 12px 0 0;
+    color: var(--text);
+}
+.reading-body h2 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 1.15;
+    letter-spacing: -.01em;
+    color: var(--text);
+    margin: 48px 0 18px;
+}
+.reading-body h3 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 23px;
+    line-height: 1.2;
+    color: var(--text);
+    margin: 40px 0 14px;
+}
+.reading-body em { font-style: italic; }
+.reading-body strong { color: var(--text); font-weight: 600; }
+
+/* In-body images — native ratio, capped 560, centered */
+.reading-body img,
+.reading-body figure { display: block; max-width: 560px; margin: 32px auto; }
+.reading-body figure img { margin: 0 auto; border-radius: var(--radius); background: var(--bg-sunken); }
+.reading-body figure figcaption {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--text-meta-2);
+    margin-top: 12px;
+    text-align: center;
+}
+
+/* ── Assumed-audience callout (styled form of the shortcode) ── */
+.assumed-audience {
+    border-left: 2px solid var(--accent);
+    padding: 4px 0 4px 22px;
+    margin: 0 0 40px;
+    display: block;
+}
+.assumed-audience-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+.assumed-audience-text {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 16px;
+    color: var(--text-muted);
+}
+.assumed-audience-text p { margin: 0; }
+
+/* ── Pull quote (blockquote in prose) ── */
+.reading-body blockquote {
+    border: none;
+    background: transparent;
+    padding: 0 0 0 4px;
+    margin: 34px 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 27px;
+    line-height: 1.35;
+    color: var(--text);
+}
+.reading-body blockquote p { margin: 0 0 8px; }
+.reading-body blockquote em { color: var(--accent); font-style: italic; }
+
+/* ── Definition / keyed list (reusable .def-list) ── */
+.def-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 34px 0;
+    padding: 28px 26px;
+    background: var(--bg-raised);
+    border-radius: 5px;
+    font-size: 16px;
+}
+.def-list-row { display: flex; gap: 16px; align-items: baseline; }
+.def-swatch { width: 11px; height: 11px; border-radius: 2px; flex: none; transform: translateY(2px); }
+.def-swatch--dashed { border-radius: 50%; border: 1px dashed var(--text-meta); background: transparent; }
+.def-term { font-weight: 700; }
+.def-term--gray { color: var(--sky-gray-label); }
+.def-term--blue { color: var(--sky-blue-label); }
+.def-term--teal { color: var(--sky-teal-label); }
+
+/* ── Divider ── */
+.reading-divider { max-width: 784px; margin: 48px auto; padding: 0 32px; }
+.reading-divider span { display: block; height: 1px; background: var(--rule-strong); }
+
+/* ── End-of-post subscribe card ── */
+.reading-subscribe { max-width: 784px; margin: 0 auto; padding: 0 32px; }
+.reading-subscribe-card {
+    background: var(--bg-card);
+    border: 1px solid var(--rule-strong);
+    border-radius: 5px;
+    padding: 34px 32px;
+    text-align: center;
+}
+.reading-subscribe-title {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    color: var(--text);
+    margin: 0 0 8px;
+}
+.reading-subscribe-desc {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin: 0 0 22px;
+}
+.reading-subscribe-card .subscribe-inline { justify-content: center; margin-top: 0; }
+
+.reading-share {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    justify-content: center;
+    margin-top: 26px;
+    flex-wrap: wrap;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-meta);
+}
+.reading-share a { color: var(--text-meta); text-decoration: none; }
+.reading-share a:hover { color: var(--text); }
+
+/* ── Post footer / tags ── */
+.reading-footer { max-width: 784px; margin: 40px auto 0; padding: 0 32px 8px; }
+.reading-footer .post-tags {
+    display: flex; flex-wrap: wrap; gap: 10px; list-style: none; margin: 0; padding: 0;
+}
+.reading-footer .post-tags a {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--text-meta-2);
+    text-decoration: none;
+    border: 1px solid var(--rule-strong);
+    border-radius: 4px;
+    padding: 4px 10px;
+}
+.reading-footer .post-tags a:hover { color: var(--text); border-color: var(--accent); }
+
+/* ── Plain pages (about, subscribe): body inherits reading column ── */
+.reading-head--plain + .reading-body { margin-top: 32px; }
+
+@media (max-width: 640px) {
+    .reading-head, .reading-hero, .reading-body, .reading-divider, .reading-subscribe, .reading-footer { padding-left: 20px; padding-right: 20px; }
+    .reading-dek { font-size: 19px; }
+}

@@ -1,0 +1,8 @@
+{{- /* Margin scribble (favorite for layman explainers): a labelled note card floated
+       beside the text. Place at the start of the paragraph it belongs to.
+       Usage: {{< scribble >}}My OCD insists this should be called "SDL".{{< /scribble >}} */ -}}
+{{- $inner := .Inner | .Page.RenderString (dict "display" "inline") -}}
+<aside class="scribble">
+  <span class="scribble-label">&#8251; aside</span>
+  <span class="scribble-note">{{ $inner }}</span>
+</aside>

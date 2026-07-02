@@ -1,0 +1,5 @@
+{{- /* Margin sidenote (Tufte): bronze superscript marker; note floats into the right
+       margin on wide screens, folds inline on mobile. Auto-numbered.
+       Usage: place right after the word — SDLC{{< sidenote >}}Software Development Lifecycle.{{< /sidenote >}} */ -}}
+{{- $inner := .Inner | .Page.RenderString (dict "display" "inline") -}}
+<span class="sidenote-wrap"><sup class="sidenote-marker" aria-hidden="true"></sup><span class="sidenote">{{ $inner }}</span></span>
