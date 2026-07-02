@@ -12,7 +12,7 @@ caption = "Michelangelo, Pietà (1499)"
 +++
 
 {{< audience >}}
-People who work with AI daily — or are starting to — and have complicated feelings about it.
+People who work with AI daily, or are starting to, and have complicated feelings about it.
 {{< /audience >}}
 
 I don't think I've ever had so much fun in my programming career as I do now. Which is strange, because a few weeks ago I was in a very different place. I was watching - in horror - as the machine on my desk was taking over my craft. Like most people I guess, I derive quite a lot of my identity from that craft; hence the horror. (Let's ignore for now whether that's a good thing or not.)

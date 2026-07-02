@@ -5,6 +5,8 @@ description = "When something annoys me twice, I make a folder, start Claude Cod
 draft = false
 tags = ["ai", "claude-code", "developer-productivity", "workflow", "agentic-coding"]
 aliases = ["/posts/every-problem-is-claudes-problem/"]
+ShowToc = true
+TocOpen = false
 [cover]
 image = "images/sculptures/atlas.webp"
 alt = "Farnese Atlas (2nd century AD)"
@@ -54,7 +56,7 @@ These are running agents on my machine right now, not thought experiments. And t
 
 ## The Loop
 
-So, every time you run one of these agents, it does its actual job. The maintenance agent checks backups and DNS. The finances agent gathers numbers. The trip planner checks if all is prepped for the trip. That's the point — they work on *their* problem, not yours.
+So, every time you run one of these agents, it does its actual job. The maintenance agent checks backups and DNS. The finances agent gathers numbers. The trip planner checks if all is prepped for the trip. That's the point: they work on *their* problem, not yours.
 
 But sometimes they get something wrong, or you notice a better way to approach it. When that happens, you don't just correct the output. You make Claude update its own instructions so it handles it better next time.
 
@@ -62,7 +64,12 @@ Your setup gets smarter over time. Not because the model improves (though that h
 
 ## What You Need
 
-Firstly, you need a flat-rate plan so you stop counting tokens. I've written about this in a previous post. You need connections (MCP servers, CLI tools) so Claude can *do* things, not just talk about them. You need permissions sorted so you're not approving every file read. And you need good instructions, which are exactly what the loop produces over time. I've written about most of these individually; the short version is that they're table stakes, not the hard part.
+The table stakes, not the hard part:
+
+- A **flat-rate plan** so you stop counting tokens (I've written about this in a previous post)
+- Connections (MCP servers, CLI tools) so Claude can *do* things, not just talk about them
+- Permissions sorted so you're not approving every file read
+- Good instructions, which are exactly what the loop produces over time
 
 ## Claude Fixes Claude
 
@@ -84,6 +91,8 @@ That sentence is clunky and I haven't found a better way to say it, but it's the
 
 I believe this is the skill of the future, and every opportunity to practice it should be taken. Dedicated problem agents are the lowest hanging fruit. Not coding.
 
-The recipe is simple. I know "make a folder" is not the kind of insight that gets you invited to TED. But the hard part was never the recipe. It's flipping the default from "I'll figure it out myself" to "let me describe this and hand it off."
+The recipe is simple. I know "make a folder" is not the kind of insight that gets you invited to TED.
+
+> The hard part was never the recipe. It's flipping the default from "I'll figure it out myself" to "let me describe this and hand it off."
 
 Pick one thing that keeps stealing your time. Make a folder. Tell Claude: this is your problem now; go own it.

@@ -1,8 +1,10 @@
 +++
 title = "My Claude Code Status Line"
 date = 2026-03-18
-description = "The full ccstatusline setup — config, custom widgets, and Model Intelligence score — that turns invisible AI state into glanceable awareness"
+description = "The full ccstatusline setup (config, custom widgets, and Model Intelligence score) that turns invisible AI state into glanceable awareness"
 draft = false
+ShowToc = true
+TocOpen = false
 [cover]
 image = "images/sculptures/hermes.webp"
 alt = "Hermes of Praxiteles (c. 340 BC)"
@@ -11,7 +13,7 @@ caption = "Hermes of Praxiteles (c. 340 BC)"
 
 The problem wasn't tokens. It was having to keep wondering.
 
-Every long session with Claude, you're running a background process in your head. Is it still sharp? Am I burning too fast? What model did I switch to? You don't notice this overhead until you eliminate it — and then you realize how much clearer everything gets.
+Every long session with Claude, you're running a background process in your head. Is it still sharp? Am I burning too fast? What model did I switch to? You don't notice this overhead until you eliminate it. And then you realize how much clearer everything gets.
 
 I built a status line that answers all five questions at a glance.
 
@@ -21,9 +23,9 @@ Two lines. Five answers. A status line only earns its keep if every element answ
 
 ## Model Intelligence
 
-I used to watch raw context percentage. Hit 40%, start wrapping up — I wrote a whole post about it ([The 40% Rule](/posts/context-40-percent-rule/)). That was on a 200K context window. Then we got 1M tokens, and a fixed percentage threshold stopped making sense. 40% of 200K is 80K — a reasonable point to wrap up. 40% of 1M is 400K — a completely different situation. What I actually wanted was a number that tracked model quality directly, not a proxy.
+I used to watch raw context percentage. Hit 40%, start wrapping up. I wrote a whole post about it ([The 40% Rule](/posts/context-40-percent-rule/)). That was on a 200K context window. Then we got 1M tokens, and a fixed percentage threshold stopped making sense. 40% of 200K is 80K: a reasonable point to wrap up. 40% of 1M is 400K: a completely different situation. What I actually wanted was a number that tracked model quality directly, not a proxy.
 
-MI (Model Intelligence) is that number. It estimates how sharp the model is right now — 1.000 when the context is fresh, declining toward 0.000 as it fills.
+MI (Model Intelligence) is that number. It estimates how sharp the model is right now: 1.000 when the context is fresh, declining toward 0.000 as it fills.
 
 The formula: `MI = max(0, 1 - u^β)` where `u` is context utilization and `β` is a per-model degradation curve:
 
@@ -33,25 +35,25 @@ The formula: `MI = max(0, 1 - u^β)` where `u` is context utilization and `β` i
 | Sonnet | 1.5 | 0.646 | 0.350 |
 | Haiku | 1.2 | 0.565 | 0.292 |
 
-The β values are calibrated against Anthropic's MRCR v2 8-needle retrieval benchmark. Opus retains quality longest; Haiku degrades earliest. Credit for the MI concept goes to [luongnv89's cc-context-stats](https://github.com/luongnv89/cc-context-stats) — I ported it as a native [ccstatusline](https://github.com/sirmalloc/ccstatusline) widget and [submitted it upstream](https://github.com/sirmalloc/ccstatusline/pull/248).
+The β values are calibrated against Anthropic's MRCR v2 8-needle retrieval benchmark. Opus retains quality longest; Haiku degrades earliest. Credit for the MI concept goes to [luongnv89's cc-context-stats](https://github.com/luongnv89/cc-context-stats). I ported it as a native [ccstatusline](https://github.com/sirmalloc/ccstatusline) widget and [submitted it upstream](https://github.com/sirmalloc/ccstatusline/pull/248).
 
 "Context at 45%" is abstract. "MI: 0.691" hits differently. That's your model getting measurably dumber in real time.
 
-Is 0.691 precise? No. But it's better than pretending context fill percentage and model quality are the same thing. When MI drops below 0.7, I start thinking about wrapping up. Below 0.5, I start fresh. The number confirms what you'd eventually feel — it just saves you the guessing.
+Is 0.691 precise? No. But it's better than pretending context fill percentage and model quality are the same thing. When MI drops below 0.7, I start thinking about wrapping up. Below 0.5, I start fresh. The number confirms what you'd eventually feel; it just saves you the guessing.
 
 ## The rest of the dashboard
 
 MI handles quality. The other widgets handle pacing and certainty.
 
-**Context bar** (`Ctx`) — Raw fill level of the context window. A fuel gauge, nothing more.
+**Context bar** (`Ctx`): Raw fill level of the context window. A fuel gauge, nothing more.
 
-**Session and weekly burn rate** — Token usage vs elapsed time ([covered in detail here](/posts/usage-burn-rate-dashboard/)). If usage outpaces time, the bar turns yellow then red. Most of the time it's green — which is the whole point.
+**Session and weekly burn rate**: Token usage vs elapsed time ([covered in detail here](/posts/usage-burn-rate-dashboard/)). If usage outpaces time, the bar turns yellow then red. Most of the time it's green, which is the whole point.
 
-**Model, effort, version** — I run Opus. I don't think about it. The moment you start switching models to save tokens, you've left the problem and started managing the tool. Same principle as [paying flat-rate and not counting tokens](/posts/context-40-percent-rule/#the-other-token-problem).
+**Model, effort, version**: I run Opus. I don't think about it. The moment you start switching models to save tokens, you've left the problem and started managing the tool. Same principle as [paying flat-rate and not counting tokens](/posts/context-40-percent-rule/#the-other-token-problem).
 
 ## The config
 
-The layout is a two-line grid of widgets — built-in types like `model` and `version`, plus `custom-command` widgets that run scripts:
+The layout is a two-line grid of widgets (built-in types like `model` and `version`, plus `custom-command` widgets that run scripts):
 
 ```json
 {
@@ -85,12 +87,12 @@ The layout is a two-line grid of widgets — built-in types like `model` and `ve
 }
 ```
 
-Custom-command widgets receive ccstatusline's data blob on stdin as JSON and output ANSI-colored text. The three scripts are below — drop them in `~/.config/ccstatusline/`.
+Custom-command widgets receive ccstatusline's data blob on stdin as JSON and output ANSI-colored text. The three scripts are below. Drop them in `~/.config/ccstatusline/`.
 
 The `model-intelligence` and `context-window-size` widget types started as [my PR](https://github.com/sirmalloc/ccstatusline/pull/248). If it hasn't been merged yet, build from [my fork](https://github.com/rdeknijf/ccstatusline/tree/feat/model-intelligence-context-window-widgets).
 
 <details>
-<summary>context-bar.py — context usage gauge</summary>
+<summary>context-bar.py: context usage gauge</summary>
 
 ```python
 #!/usr/bin/env python3
@@ -127,7 +129,7 @@ print(f"{color}{'█' * filled}{DIM}{'░' * (BAR_WIDTH - filled)}{RESET} {color
 </details>
 
 <details>
-<summary>dual-usage-bar.py — burn rate gauge</summary>
+<summary>dual-usage-bar.py: burn rate gauge</summary>
 
 ```python
 #!/usr/bin/env python3
@@ -180,7 +182,7 @@ if __name__ == "__main__": main()
 </details>
 
 <details>
-<summary>effort.py — effort level reader</summary>
+<summary>effort.py: effort level reader</summary>
 
 ```python
 #!/usr/bin/env python3
@@ -196,13 +198,13 @@ except (FileNotFoundError, json.JSONDecodeError):
 
 ## The rearview mirror
 
-None of these turn yellow as emergencies. They're awareness — like a rearview mirror you glance at and dismiss.
+None of these turn yellow as emergencies. They're awareness, like a rearview mirror you glance at and dismiss.
 
-The point isn't to monitor the model. It's to stop monitoring it in your head.
+> The point isn't to monitor the model. It's to stop monitoring it in your head.
 
 This is apparently the third in an unplanned series on making AI-assisted development less anxious: [The 40% Rule](/posts/context-40-percent-rule/), [Your AI Fuel Gauge](/posts/usage-burn-rate-dashboard/), and this post.
 
 ## Credits
 
-- [ccstatusline](https://github.com/sirmalloc/ccstatusline) by sirmalloc — the status line framework
-- [cc-context-stats](https://github.com/luongnv89/cc-context-stats) by luongnv89 — the Model Intelligence formula and concept
+- [ccstatusline](https://github.com/sirmalloc/ccstatusline) by sirmalloc: the status line framework
+- [cc-context-stats](https://github.com/luongnv89/cc-context-stats) by luongnv89: the Model Intelligence formula and concept

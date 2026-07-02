@@ -36,7 +36,7 @@ So, this is mine. Or as close as I can get to it without being overly dramatic o
 <p style="font-size:13px; color:#888; font-style:italic; font-family:'Comic Sans MS',cursive;">My capability skyline, circa 2024. Note the conspicuous absence of anything hardware-related.</p>
 </div>
 
-Everyone is good at something; many somethings in fact. Some people of course less than others. Much to my father's despair I couldn't kick a soccer ball to save my life. Luckily both my younger brothers compensated handsomely for that, and I've always been able to fix his printer and program the VCR. (Damn, I remember when "millennial" meant "young".) So I get a taller tower there. (Sorry bros, it's true.) And this is how you can map out anyone.
+Everyone is good at something; many somethings in fact. Some people of course less than others. Much to my father's despair I couldn't kick a soccer ball to save my life. Luckily both my younger brothers compensated handsomely for that, and I've always been able to fix his printer and program the VCR.{{< whisper style="paren" >}}Damn, I remember when "millennial" meant "young".{{< /whisper >}} So I get a taller tower there.{{< whisper style="paren" >}}Sorry bros, it's true.{{< /whisper >}} And this is how you can map out anyone.
 
 <div style="display:flex; justify-content:center; gap:12px; flex-wrap:nowrap; margin: 40px 0;">
 <div style="text-align:center;">
@@ -74,7 +74,7 @@ The question is, where does competence stop and capability start? And where, in 
 - And past teal; there are no buildings. Just outer space of hopes and prayers.
 
 ### Gray: DevOps
-This is the easy bit. For me that's Python, Terraform, Git, etc. All the usual trappings of being a DevOps engineer for far too long. (How's my writing career coming along?)
+This is the easy bit. For me that's Python, Terraform, Git, etc. All the usual trappings of being a DevOps engineer for far too long.{{< whisper style="paren" >}}How's my writing career coming along?{{< /whisper >}}
 
 ### Blue: the PCB
 
