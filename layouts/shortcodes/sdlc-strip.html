@@ -1,0 +1,122 @@
+{{- /* Simple SDLC strip — the six-phase "gist" line: idea > design > create >
+       review > deploy > monitor. Self-contained, matches the sdlc-pipeline
+       figure's tokens/fonts/accent but no JS. Each phase carries a short
+       hover/focus tooltip. Usage: {{< sdlc-strip >}} */ -}}
+<figure id="sdlc-strip" aria-label="The software development lifecycle as a simple six-phase strip: idea, design, create, review, deploy, monitor.">
+<style>
+#sdlc-strip {
+  /* read host theme tokens, fall back to parchment hexes */
+  --st-bg:     var(--theme,     #fdf6ec);
+  --st-text:   var(--primary,   #3d2e1e);
+  --st-muted:  var(--secondary, #7a6652);
+  --st-border: var(--tertiary,  #e4d5c1);
+  --st-accent: #8b4513;                 /* saddle brown */
+  --st-panel:  color-mix(in oklab, var(--st-text) 4%, var(--st-bg));
+  width: 100%;
+  margin: 2em 0 2.2em;
+  padding: 0;
+  font-family: "EB Garamond", Georgia, serif;
+  color: var(--st-text);
+  -webkit-font-smoothing: antialiased;
+}
+:where(html.dark, body.dark) #sdlc-strip,
+.dark #sdlc-strip {
+  --st-bg:     var(--theme,     #1a1816);
+  --st-text:   var(--primary,   #e0d5c7);
+  --st-muted:  var(--secondary, #9a8b7a);
+  --st-border: var(--tertiary,  #3a332c);
+  --st-accent: #d4a574;
+}
+@media (prefers-color-scheme: dark) {
+  :where(html:not(.light), body:not(.light)) #sdlc-strip {
+    --st-bg:     var(--theme,     #1a1816);
+    --st-text:   var(--primary,   #e0d5c7);
+    --st-muted:  var(--secondary, #9a8b7a);
+    --st-border: var(--tertiary,  #3a332c);
+    --st-accent: #d4a574;
+  }
+}
+#sdlc-strip * { box-sizing: border-box; overflow-wrap: normal; word-break: normal; hyphens: none; }
+/* Default: no clipping, so the hover tooltips can sit above a phase. The strip
+   fits on any normal-width screen, so nothing overflows here anyway. On narrow
+   screens we switch to a horizontal scroll region (below). */
+#sdlc-strip .st-scroll { overflow: visible; }
+@media (max-width: 760px) {
+  #sdlc-strip .st-scroll {
+    overflow-x: auto; overflow-y: hidden; padding-bottom: 4px;
+    scrollbar-width: thin; scrollbar-color: var(--st-border) transparent;
+  }
+  #sdlc-strip .st-scroll::-webkit-scrollbar { height: 6px; }
+  #sdlc-strip .st-scroll::-webkit-scrollbar-thumb { background: var(--st-border); border-radius: 99px; }
+}
+#sdlc-strip .st-row {
+  display: flex; align-items: stretch; justify-content: center;
+  gap: 0; width: max-content; min-width: 100%; margin: 0 auto;
+}
+#sdlc-strip .st-phase {
+  position: relative;                    /* tooltip anchor */
+  flex: 0 0 auto; min-width: 96px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+  padding: 13px 14px;
+  border: 1px solid var(--st-border);
+  border-top: 3px solid color-mix(in oklab, var(--st-accent) 70%, var(--st-border));
+  border-radius: 4px;
+  background: var(--st-panel);
+  cursor: default;
+}
+#sdlc-strip .st-phase:focus-visible {
+  outline: 2px solid var(--st-accent); outline-offset: 2px;
+}
+#sdlc-strip .st-name {
+  font-size: 17px; font-weight: 500; line-height: 1.1; color: var(--st-text);
+}
+#sdlc-strip .st-arrow {
+  flex: 0 0 auto; width: 30px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--st-accent);
+}
+#sdlc-strip .st-arrow svg { width: 22px; height: 12px; display: block; }
+/* ---------- per-phase tooltip (pure CSS, hover + keyboard focus) ---------- */
+#sdlc-strip .st-phase::after {
+  content: attr(data-tip);
+  position: absolute; left: 50%; bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  width: max-content; max-width: 200px;
+  background: var(--st-text); color: var(--st-bg);
+  border-radius: 6px; padding: 8px 10px;
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  font-size: 12px; line-height: 1.36; text-align: left;
+  box-shadow: 0 6px 22px rgba(0,0,0,.18);
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity .16s ease, transform .16s ease;
+  z-index: 10;
+}
+#sdlc-strip .st-phase:hover::after,
+#sdlc-strip .st-phase:focus-visible::after {
+  opacity: 1; visibility: visible; transform: translateX(-50%) translateY(-2px);
+}
+/* keep the end tooltips from spilling past the strip edges */
+#sdlc-strip .st-row .st-phase:first-child::after { left: 0; transform: none; }
+#sdlc-strip .st-row .st-phase:first-child:hover::after,
+#sdlc-strip .st-row .st-phase:first-child:focus-visible::after { transform: translateY(-2px); }
+#sdlc-strip .st-row .st-phase:last-child::after { left: auto; right: 0; transform: none; }
+#sdlc-strip .st-row .st-phase:last-child:hover::after,
+#sdlc-strip .st-row .st-phase:last-child:focus-visible::after { transform: translateY(-2px); }
+</style>
+<div class="st-scroll">
+  <div class="st-row">
+    <div class="st-phase" tabindex="0" data-tip="Where it starts. A problem worth solving, or a ticket." aria-label="Idea: where it starts. A problem worth solving, or a ticket."><span class="st-name">Idea</span></div>
+    <div class="st-arrow" aria-hidden="true"><svg viewBox="0 0 22 12" fill="none" stroke="currentColor" stroke-width="1.3"><line x1="0" y1="6" x2="19" y2="6"/><path d="M14 1.5 19.5 6 14 10.5"/></svg></div>
+    <div class="st-phase" tabindex="0" data-tip="Decide the shape before any code gets written." aria-label="Design: decide the shape before any code gets written."><span class="st-name">Design</span></div>
+    <div class="st-arrow" aria-hidden="true"><svg viewBox="0 0 22 12" fill="none" stroke="currentColor" stroke-width="1.3"><line x1="0" y1="6" x2="19" y2="6"/><path d="M14 1.5 19.5 6 14 10.5"/></svg></div>
+    <div class="st-phase" tabindex="0" data-tip="Write it. Code, config, tests." aria-label="Create: write it. Code, config, tests."><span class="st-name">Create</span></div>
+    <div class="st-arrow" aria-hidden="true"><svg viewBox="0 0 22 12" fill="none" stroke="currentColor" stroke-width="1.3"><line x1="0" y1="6" x2="19" y2="6"/><path d="M14 1.5 19.5 6 14 10.5"/></svg></div>
+    <div class="st-phase" tabindex="0" data-tip="Someone, or something, checks it before it ships." aria-label="Review: someone, or something, checks it before it ships."><span class="st-name">Review</span></div>
+    <div class="st-arrow" aria-hidden="true"><svg viewBox="0 0 22 12" fill="none" stroke="currentColor" stroke-width="1.3"><line x1="0" y1="6" x2="19" y2="6"/><path d="M14 1.5 19.5 6 14 10.5"/></svg></div>
+    <div class="st-phase" tabindex="0" data-tip="Push the build out to where it runs." aria-label="Deploy: push the build out to where it runs."><span class="st-name">Deploy</span></div>
+    <div class="st-arrow" aria-hidden="true"><svg viewBox="0 0 22 12" fill="none" stroke="currentColor" stroke-width="1.3"><line x1="0" y1="6" x2="19" y2="6"/><path d="M14 1.5 19.5 6 14 10.5"/></svg></div>
+    <div class="st-phase" tabindex="0" data-tip="Watch it in production. Catch failures before users do." aria-label="Monitor: watch it in production. Catch failures before users do."><span class="st-name">Monitor</span></div>
+  </div>
+</div>
+</figure>

@@ -1,0 +1,29 @@
+/* ------------------------------------------------------------------ *
+ * SDLC figures — host-theme integration for the imported Claude Design
+ * pipeline embed ({{< sdlc-pipeline >}}) and the simple strip
+ * ({{< sdlc-strip >}}). The reading column caps figures at 560px
+ * (atrium-reading.css: `.reading-body figure { max-width: 560px }`);
+ * these #id rules (higher specificity) let the diagrams break out of
+ * that column so they show at their intended width. Kept here — not in
+ * the embed — so re-importing the figure from Claude Design never loses
+ * the fix. Ancestors are overflow-x:visible, so the breakout is not
+ * clipped; the diagrams cap themselves at 94vw so they never force a
+ * horizontal page scroll.
+ * ------------------------------------------------------------------ */
+
+/* Big interactive pipeline: the embed already sets
+   width:min(1120px,94vw) + margin-left:50% + translateX(-50%); it only
+   needs the column's max-width cap lifted to expand symmetrically. */
+.reading-body #sdlc-pipeline {
+  max-width: 96vw;
+}
+
+/* Simple six-phase strip: break out of the 560px column just enough to
+   show all six phases on one line at desktop width, centred on the
+   column, and let its inner scroll region handle narrow viewports. */
+.reading-body #sdlc-strip {
+  width: max-content;
+  max-width: 94vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}

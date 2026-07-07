@@ -1,0 +1,1299 @@
+<figure id="sdlc-pipeline" aria-label="Where AI agents fit across the software development lifecycle, and the feedback loop each one relies on."></figure>
+
+<style>
+/* ===================================================================== */
+/*  PALETTE  — all colours are CSS custom properties so you can retune    */
+/*  in one place. We read the host theme's tokens first (--theme,         */
+/*  --primary, --secondary, --tertiary) and fall back to the parchment    */
+/*  hexes when they're absent.                                            */
+/* ===================================================================== */
+#sdlc-pipeline {
+  position: relative;
+  /* --- structural theme (light / parchment) --- */
+  --sp-bg:      var(--theme,     #fdf6ec);
+  --sp-text:    var(--primary,   #3d2e1e);
+  --sp-muted:   var(--secondary, #7a6652);
+  --sp-border:  var(--tertiary,  #e4d5c1);
+  --sp-accent:  #8b4513;                       /* saddle brown — pipeline accent */
+  --sp-improver:#a86a2c;                        /* improver gets a distinct warm accent */
+  --sp-panel:   color-mix(in oklab, var(--sp-text) 4%, var(--sp-bg));
+
+  /* --- capability tints (the colour dimension; muted, parchment-friendly) --- */
+  --cap-read:          #5f7d8c;   /* Read & advise     */
+  --cap-generate:      #b3812f;   /* Generate          */
+  --cap-autonomous:    #a6603a;   /* Autonomous action */
+  --cap-deterministic: #9a8b7a;   /* Keep deterministic*/
+  --cap-gate:          #97413f;   /* Gate              */
+
+  /* --- layout knobs --- */
+  --sp-col-w: 150px;     /* width of one phase column          */
+  --sp-arrow-w: 30px;    /* width of the forward-arrow gap      */
+  --sp-anim: .42s;       /* show/hide transition duration       */
+
+  /* container + COLUMN BREAKOUT.
+     The figure is allowed to grow wider than the article's text column, up to
+     --sp-maxw, using whatever width the viewport offers. This assumes a
+     CENTERED content column (the common blog case): we anchor the figure on
+     the column's centre and let it expand symmetrically past both edges.
+     If your theme's column is NOT centred, replace the three breakout lines
+     with a plain `width: 100%;`. */
+  --sp-maxw: 2850px;                    /* hard cap on figure width (Fever Dream natural width ~2670 + one-column headroom) */
+  width: min(var(--sp-maxw), 96vw);
+  margin-left: 50%;
+  transform: translateX(-50%);
+  font-family: "EB Garamond", Georgia, serif;
+  color: var(--sp-text);
+  margin-top: 2.4em;
+  margin-bottom: 2.4em;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* dark theme via host .dark class (preferred) … */
+:where(html.dark, body.dark) #sdlc-pipeline,
+.dark #sdlc-pipeline {
+  --sp-bg:     var(--theme,     #1a1816);
+  --sp-text:   var(--primary,   #e0d5c7);
+  --sp-muted:  var(--secondary, #9a8b7a);
+  --sp-border: var(--tertiary,  #3a332c);
+  --sp-accent: #d4a574;
+  --sp-improver:#e0b06a;
+  --cap-read:          #8fb0c0;
+  --cap-generate:      #d4a574;
+  --cap-autonomous:    #d08a63;
+  --cap-deterministic: #b3a392;
+  --cap-gate:          #cc7a78;
+}
+/* … and prefers-color-scheme as a backstop when the host sets no class */
+@media (prefers-color-scheme: dark) {
+  :where(html:not(.light), body:not(.light)) #sdlc-pipeline {
+    --sp-bg:     var(--theme,     #1a1816);
+    --sp-text:   var(--primary,   #e0d5c7);
+    --sp-muted:  var(--secondary, #9a8b7a);
+    --sp-border: var(--tertiary,  #3a332c);
+    --sp-accent: #d4a574;
+    --sp-improver:#e0b06a;
+    --cap-read:          #8fb0c0;
+    --cap-generate:      #d4a574;
+    --cap-autonomous:    #d08a63;
+    --cap-deterministic: #b3a392;
+    --cap-gate:          #cc7a78;
+  }
+}
+
+#sdlc-pipeline * { box-sizing: border-box; overflow-wrap: normal; word-break: normal; hyphens: none; }
+
+/* ---------- header / controls ---------- */
+#sdlc-pipeline .sp-head {
+  display: flex; flex-wrap: wrap; align-items: flex-end;
+  justify-content: space-between; gap: 16px 24px;
+  margin-bottom: 22px;
+}
+#sdlc-pipeline .sp-title {
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  font-weight: 600; font-size: 12px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--sp-muted);
+  margin: 0 0 4px;
+}
+#sdlc-pipeline .sp-dek {
+  font-size: 16px; line-height: 1.45; color: var(--sp-text);
+  margin: 0; max-width: 46ch; font-style: italic;
+}
+
+/* detail-level segmented control */
+#sdlc-pipeline .sp-ctrls { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: flex-end; }
+#sdlc-pipeline .sp-detail { display: flex; flex-direction: column; gap: 6px; }
+#sdlc-pipeline .sp-detail-label {
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--sp-muted);
+}
+#sdlc-pipeline .sp-seg {
+  display: inline-flex; border: 1px solid var(--sp-border); border-radius: 999px;
+  padding: 3px; background: var(--sp-panel); gap: 2px;
+}
+#sdlc-pipeline .sp-seg button {
+  font: 500 13px/1 "Source Sans 3", system-ui, sans-serif;
+  color: var(--sp-muted); background: transparent; border: 0;
+  padding: 7px 14px; border-radius: 999px; cursor: pointer;
+  transition: color var(--sp-anim) ease, background var(--sp-anim) ease;
+  white-space: nowrap;
+}
+#sdlc-pipeline .sp-seg button[aria-checked="true"] {
+  color: var(--sp-bg); background: var(--sp-accent);
+}
+#sdlc-pipeline .sp-seg button:focus-visible {
+  outline: 2px solid var(--sp-accent); outline-offset: 2px;
+}
+
+/* ---------- controls band: type (legend) | handwritten nudge | detail ---------- */
+#sdlc-pipeline .sp-controls {
+  display: flex; flex-wrap: wrap; align-items: flex-end;
+  justify-content: space-between; gap: 12px 24px; margin: 0 0 20px;
+}
+#sdlc-pipeline .sp-controls .sp-legend { margin: 0; }
+#sdlc-pipeline .sp-controls .sp-detail { align-items: flex-start; }
+
+/* each control group + its handwritten arrow travel together as one cluster,
+   so the arrow stays adjacent to its group at any band width */
+#sdlc-pipeline .sp-cluster {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; min-width: 0;
+}
+
+/* handwritten nudge hugging its control group (arrow points at the group) */
+#sdlc-pipeline .sp-note {
+  flex: none; align-self: center; min-width: 0;
+  display: flex; align-items: center; justify-content: center; gap: 2px;
+  color: var(--sp-improver);
+  opacity: 0; transform: translateY(2px);
+  transition: opacity .4s ease, transform .4s ease;
+  pointer-events: none;
+}
+#sdlc-pipeline[data-demo="idle"] .sp-note { opacity: 1; transform: none; }
+#sdlc-pipeline .sp-note-text {
+  font-family: "Caveat", "Segoe Print", "Bradley Hand", cursive;
+  font-weight: 700; font-size: 24px; line-height: 1; white-space: nowrap;
+  transform: rotate(-3deg);
+}
+#sdlc-pipeline .sp-note-arr { flex: none; width: 46px; height: 21px; opacity: .85; }
+
+/* ---------- legend ---------- */
+#sdlc-pipeline .sp-legend {
+  display: flex; flex-wrap: wrap; gap: 6px 8px; margin: 0 0 18px;
+}
+#sdlc-pipeline .sp-legend button {
+  display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
+  font: 500 12px/1 "Source Sans 3", system-ui, sans-serif;
+  color: var(--sp-muted); background: transparent;
+  border: 1px solid var(--sp-border); border-radius: 999px;
+  padding: 6px 11px 6px 9px; cursor: pointer;
+  transition: border-color .2s ease, color .2s ease, opacity .2s ease;
+}
+#sdlc-pipeline .sp-legend button .sp-swatch {
+  width: 11px; height: 11px; border-radius: 3px; flex: none;
+  background: var(--c); border: 1px solid color-mix(in oklab, var(--c) 60%, transparent);
+}
+#sdlc-pipeline .sp-legend button:hover { color: var(--sp-text); border-color: var(--c); }
+#sdlc-pipeline .sp-legend button[aria-pressed="true"] {
+  color: var(--sp-text); border-color: var(--c);
+  background: color-mix(in oklab, var(--c) 12%, transparent);
+}
+/* when a filter is active, fade the legend chips that aren't selected */
+#sdlc-pipeline[data-filter] .sp-legend button:not([aria-pressed="true"]) { opacity: .45; }
+#sdlc-pipeline .sp-legend button:focus-visible { outline: 2px solid var(--c); outline-offset: 2px; }
+
+/* ---------- viewport (holds the scroll region + edge fades + hint) ---------- */
+#sdlc-pipeline .sp-viewport { position: relative; }
+
+/* edge fade gradients — appear only on the side that has more content,
+   the clearest "there's more this way" signal. They blend into the page
+   background (--sp-bg) and never intercept pointer events. */
+#sdlc-pipeline .sp-fade {
+  position: absolute; top: 0; bottom: 8px; width: 48px; z-index: 6;
+  pointer-events: none; opacity: 0; transition: opacity .25s ease;
+}
+#sdlc-pipeline .sp-fade-l { left: 0;  background: linear-gradient(to right, var(--sp-bg), transparent); }
+#sdlc-pipeline .sp-fade-r { right: 0; background: linear-gradient(to left,  var(--sp-bg), transparent); }
+#sdlc-pipeline .sp-viewport[data-scroll-l="true"] .sp-fade-l { opacity: 1; }
+#sdlc-pipeline .sp-viewport[data-scroll-r="true"] .sp-fade-r { opacity: 1; }
+
+/* "drag to explore" hint — fades out after the first interaction */
+#sdlc-pipeline .sp-hint {
+  position: absolute; right: 16px; bottom: 14px; z-index: 7;
+  display: inline-flex; align-items: center; gap: 7px;
+  font: 500 11.5px/1 "Source Sans 3", system-ui, sans-serif;
+  letter-spacing: .03em; color: var(--sp-bg);
+  background: color-mix(in oklab, var(--sp-text) 80%, transparent);
+  padding: 8px 12px; border-radius: 999px;
+  pointer-events: none; opacity: 0; transition: opacity .3s ease;
+}
+#sdlc-pipeline .sp-viewport[data-hint="true"] .sp-hint { opacity: 1; }
+#sdlc-pipeline .sp-hint svg { width: 16px; height: 9px; }
+
+/* ---------- scroll region + inner ---------- */
+#sdlc-pipeline .sp-scroll {
+  overflow-x: auto; overflow-y: visible; padding-bottom: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--sp-border) transparent;
+}
+/* grab cursor only while the row actually overflows (toggled in JS) */
+#sdlc-pipeline .sp-scroll.sp-pan { cursor: grab; }
+#sdlc-pipeline .sp-scroll[data-drag="true"] { cursor: grabbing; user-select: none; }
+#sdlc-pipeline .sp-scroll[data-fit="true"] { cursor: default; overflow: hidden; }
+#sdlc-pipeline .sp-scroll::-webkit-scrollbar { height: 7px; }
+#sdlc-pipeline .sp-scroll::-webkit-scrollbar-thumb {
+  background: var(--sp-border); border-radius: 99px;
+}
+/* in fit/overview mode the inner is scaled down from the top-left */
+#sdlc-pipeline .sp-inner.sp-fit { transform-origin: top left; }
+#sdlc-pipeline .sp-inner {
+  position: relative;          /* tooltip anchor + connector alignment */
+  width: max-content;
+  min-width: 100%;
+  padding-top: 4px;
+}
+
+/* ---------- the phase row ---------- */
+/* centre the phases when the figure is wider than the content (low detail
+   levels / ultrawide); `safe` falls back to start-alignment when the content
+   overflows, so the leftmost phase never becomes unreachable behind a scroll. */
+#sdlc-pipeline .sp-row { display: flex; align-items: stretch; justify-content: safe center; }
+#sdlc-pipeline .sp-phase {
+  flex: 0 0 auto; width: var(--sp-col-w);
+  display: flex; flex-direction: column;
+  transition: width var(--sp-anim) ease, opacity var(--sp-anim) ease;
+  overflow: hidden;
+}
+#sdlc-pipeline .sp-phase[data-visible="false"] {
+  width: 0; opacity: 0; pointer-events: none;
+}
+#sdlc-pipeline .sp-phase-inner {
+  width: var(--sp-col-w); padding: 0 7px;
+  display: flex; flex-direction: column;
+}
+/* phase header */
+#sdlc-pipeline .sp-phase-head {
+  text-align: center; padding-bottom: 10px; margin-bottom: 12px;
+  border-bottom: 1px solid var(--sp-border);
+}
+#sdlc-pipeline .sp-phase-num {
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  font-size: 10px; letter-spacing: .12em; color: var(--sp-muted);
+  display: block; margin-bottom: 3px;
+}
+#sdlc-pipeline .sp-phase-name {
+  font-size: 17px; font-weight: 500; line-height: 1.15; color: var(--sp-text);
+}
+
+/* forward arrows between phases */
+#sdlc-pipeline .sp-arrow {
+  flex: 0 0 auto; width: var(--sp-arrow-w);
+  display: flex; align-items: flex-start; justify-content: center;
+  padding-top: 18px; color: var(--sp-muted);
+  transition: width var(--sp-anim) ease, opacity var(--sp-anim) ease;
+  overflow: hidden;
+}
+#sdlc-pipeline .sp-arrow[data-visible="false"] { width: 0; opacity: 0; }
+#sdlc-pipeline .sp-arrow svg { width: 22px; height: 12px; display: block; }
+
+/* ---------- slots ---------- */
+#sdlc-pipeline .sp-slots { display: flex; flex-direction: column; gap: 9px; }
+#sdlc-pipeline .sp-slot {
+  --c: var(--cap-generate);
+  position: relative;
+  border: 1px solid color-mix(in oklab, var(--c) 42%, var(--sp-border));
+  border-left: 3px solid var(--c);
+  background: color-mix(in oklab, var(--c) 9%, var(--sp-bg));
+  border-radius: 5px; padding: 8px 9px 9px;
+  cursor: default;
+  transition: opacity var(--sp-anim) ease, transform var(--sp-anim) ease,
+              max-height var(--sp-anim) ease, margin var(--sp-anim) ease,
+              padding var(--sp-anim) ease, border-width var(--sp-anim) ease;
+  max-height: 220px; overflow: hidden;
+}
+#sdlc-pipeline .sp-slot[data-visible="false"] {
+  opacity: 0; max-height: 0; padding-top: 0; padding-bottom: 0;
+  margin-top: -9px; border-top-width: 0; border-bottom-width: 0;
+  transform: translateY(-4px); pointer-events: none;
+}
+#sdlc-pipeline .sp-slot-top { display: flex; align-items: baseline; gap: 6px; }
+#sdlc-pipeline .sp-marker {           /* the little feedback-loop glyph */
+  color: var(--c); font-size: 13px; line-height: 1; flex: none;
+  transform: translateY(1px);
+}
+#sdlc-pipeline .sp-slot-name { font-size: 14.5px; line-height: 1.18; font-weight: 500; overflow-wrap: break-word; }
+#sdlc-pipeline .sp-cap {
+  display: inline-block; margin-top: 4px;
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  font-size: 9.5px; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--c);
+}
+/* inline block — no longer shown (all levels use the hover/focus tooltip) */
+#sdlc-pipeline .sp-loop-inline {
+  display: none;
+  margin-top: 7px; padding-top: 7px;
+  border-top: 1px dashed color-mix(in oklab, var(--c) 40%, var(--sp-border));
+}
+#sdlc-pipeline .sp-desc {
+  margin: 0 0 7px; font-size: 12.5px; line-height: 1.36; color: var(--sp-text);
+}
+#sdlc-pipeline .sp-loop-row { display: block; }
+#sdlc-pipeline .sp-loop-lbl {
+  display: inline-block; margin-right: 5px;
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  font-size: 9px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--c);
+}
+#sdlc-pipeline .sp-loop-txt {
+  font-size: 12.5px; font-style: italic; line-height: 1.36; color: var(--sp-muted);
+}
+/* the eval-loop label reads differently for a deterministic (non-AI) check */
+#sdlc-pipeline .sp-loop-det .sp-loop-lbl { color: var(--sp-muted); }
+#sdlc-pipeline .sp-loop-det .sp-loop-txt { font-style: normal; }
+
+/* slot focus / hover */
+#sdlc-pipeline .sp-slot:hover,
+#sdlc-pipeline .sp-slot:focus-visible {
+  border-color: var(--c);
+  background: color-mix(in oklab, var(--c) 15%, var(--sp-bg));
+  outline: none;
+}
+#sdlc-pipeline .sp-slot:focus-visible { box-shadow: 0 0 0 2px color-mix(in oklab, var(--c) 55%, transparent); }
+
+/* dim slots filtered out by the legend */
+#sdlc-pipeline[data-filter] .sp-slot:not([data-cap-match="true"]) { opacity: .16; }
+
+/* ===================================================================== */
+/*  DETERMINISTIC (non-AI) SLOTS — the tests / checks we've always run.   */
+/*  These are NOT agents: no capability colour, no eval-loop marker, a    */
+/*  monospaced "scripted" treatment + square corners set them apart.      */
+/*  Three switchable looks via the [data-det] attribute on #sdlc-pipeline:*/
+/*    data-det="mono"   plain monospace card (default)                    */
+/*    data-det="hatch"  + diagonal blueprint hatch fill                   */
+/*    data-det="ledger" + a grey top rule instead of a left colour stripe */
+/* ===================================================================== */
+#sdlc-pipeline .sp-slot[data-cap="deterministic"] {
+  --c: var(--sp-muted);
+  border-radius: 1px;                                  /* square, not rounded */
+  border: 1px solid color-mix(in oklab, var(--sp-muted) 48%, var(--sp-border));
+  background: color-mix(in oklab, var(--sp-muted) 7%, var(--sp-bg));
+}
+#sdlc-pipeline .sp-slot[data-cap="deterministic"] .sp-slot-name,
+#sdlc-pipeline .sp-slot[data-cap="deterministic"] .sp-cap,
+#sdlc-pipeline .sp-slot[data-cap="deterministic"] .sp-marker,
+#sdlc-pipeline .sp-slot[data-cap="deterministic"] .sp-loop-lbl,
+#sdlc-pipeline .sp-slot[data-cap="deterministic"] .sp-loop-txt {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+#sdlc-pipeline .sp-slot[data-cap="deterministic"] .sp-slot-name { font-size: 13px; font-weight: 600; letter-spacing: -.01em; }
+#sdlc-pipeline .sp-slot[data-cap="deterministic"] .sp-marker { font-size: 11px; transform: translateY(0); }
+#sdlc-pipeline .sp-slot[data-cap="deterministic"] .sp-cap { letter-spacing: .02em; }
+#sdlc-pipeline .sp-slot[data-cap="deterministic"] .sp-loop-txt { font-size: 11.5px; }
+#sdlc-pipeline .sp-slot[data-cap="deterministic"]:hover,
+#sdlc-pipeline .sp-slot[data-cap="deterministic"]:focus-visible {
+  border-color: var(--sp-muted);
+  background: color-mix(in oklab, var(--sp-muted) 13%, var(--sp-bg));
+  box-shadow: none;
+}
+/* option: diagonal hatch fill */
+#sdlc-pipeline[data-det="hatch"] .sp-slot[data-cap="deterministic"] {
+  background:
+    repeating-linear-gradient(45deg,
+      color-mix(in oklab, var(--sp-muted) 13%, var(--sp-bg)) 0,
+      color-mix(in oklab, var(--sp-muted) 13%, var(--sp-bg)) 1px,
+      transparent 1px, transparent 6px),
+    var(--sp-bg);
+}
+/* option: grey top rule (instead of the AI slots' left colour stripe) */
+#sdlc-pipeline[data-det="ledger"] .sp-slot[data-cap="deterministic"] {
+  border-top: 3px solid color-mix(in oklab, var(--sp-muted) 70%, var(--sp-border));
+  background: var(--sp-bg);
+}
+
+/* ---------- connector row: per-phase risers + a full-width harvest bus ----------
+   The risers + bus live INSIDE the scroll region, so they stay aligned with the
+   phases as the reader scrolls. The bus spans the whole pipeline width, so a
+   single centred stem from the (non-scrolling) Improver below always meets it. */
+#sdlc-pipeline .sp-conns { position: relative; display: flex; align-items: stretch; justify-content: safe center; height: 36px; }
+#sdlc-pipeline .sp-bus {            /* the horizontal "harvest" line */
+  position: absolute; left: 0; right: 0; bottom: 0; height: 0;
+  border-top: 1.5px dashed color-mix(in oklab, var(--sp-improver) 60%, transparent);
+}
+#sdlc-pipeline .sp-conn {
+  flex: 0 0 auto; width: var(--sp-col-w);
+  position: relative;
+  transition: width var(--sp-anim) ease, opacity var(--sp-anim) ease;
+  overflow: hidden;
+}
+#sdlc-pipeline .sp-conn[data-visible="false"] { width: 0; opacity: 0; }
+#sdlc-pipeline .sp-conn::before {           /* the dashed vertical line */
+  content: ""; position: absolute; left: 50%; top: 0; bottom: 0;
+  border-left: 1.5px dashed color-mix(in oklab, var(--sp-improver) 55%, transparent);
+}
+#sdlc-pipeline .sp-conn-gap { flex: 0 0 auto; width: var(--sp-arrow-w);
+  transition: width var(--sp-anim) ease; overflow: hidden; }
+#sdlc-pipeline .sp-conn-gap[data-visible="false"] { width: 0; }
+
+/* ---------- the Improver node ----------
+   Lives OUTSIDE the scroll region, centred under the viewport at a normal
+   reading width — so it holds still while the pipeline scrolls behind/above it.
+   A short dashed stem links it up to the harvest bus. */
+#sdlc-pipeline .sp-improver-wrap {
+  display: flex; flex-direction: column; align-items: center;
+}
+#sdlc-pipeline .sp-improver-stem {
+  width: 0; height: 22px;
+  border-left: 1.5px dashed var(--sp-improver);
+}
+#sdlc-pipeline .sp-improver {
+  position: relative;
+  width: 100%; max-width: 680px;
+  border: 1.5px dashed var(--sp-improver);
+  border-radius: 8px;
+  background: color-mix(in oklab, var(--sp-improver) 8%, var(--sp-bg));
+  padding: 15px 20px;
+  display: flex; gap: 20px; align-items: flex-start;
+}
+#sdlc-pipeline .sp-improver-badge { flex: none; max-width: 168px; }
+#sdlc-pipeline .sp-improver-kicker {
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--sp-improver); margin-bottom: 4px;
+}
+#sdlc-pipeline .sp-improver-name {
+  font-size: 22px; font-weight: 600; line-height: 1.05; color: var(--sp-text);
+}
+#sdlc-pipeline .sp-improver-loop {
+  display: inline-flex; align-items: center; gap: 5px; margin-top: 8px;
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  font-size: 10.5px; letter-spacing: .04em; color: var(--sp-improver);
+}
+#sdlc-pipeline .sp-improver-body {
+  font-size: 14.5px; line-height: 1.5; color: var(--sp-muted);
+  border-left: 1px solid var(--sp-border); padding-left: 18px;
+}
+#sdlc-pipeline .sp-improver-body strong { color: var(--sp-text); font-weight: 600; }
+@media (max-width: 560px) {
+  #sdlc-pipeline .sp-improver { flex-direction: column; gap: 12px; }
+  #sdlc-pipeline .sp-improver-body { border-left: 0; padding-left: 0;
+    border-top: 1px solid var(--sp-border); padding-top: 12px; }
+  #sdlc-pipeline .sp-improver-badge { max-width: none; }
+}
+
+/* ---------- tooltip (description + eval loop on hover/focus at L2 / L3) ---------- */
+#sdlc-pipeline .sp-tip {
+  position: absolute; z-index: 20; width: max-content; max-width: 240px; white-space: normal;
+  background: var(--sp-text); color: var(--sp-bg);
+  border-radius: 6px; padding: 10px 12px;
+  font-size: 12.5px; line-height: 1.4;
+  box-shadow: 0 6px 22px rgba(0,0,0,.18);
+  opacity: 0; visibility: hidden;
+  transform: translateX(-50%) translateY(4px);
+  transition: opacity .16s ease, transform .16s ease;
+  pointer-events: none;
+}
+#sdlc-pipeline .sp-tip[data-show="true"] { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+#sdlc-pipeline .sp-tip-desc { margin: 0 0 7px; font-style: normal; }
+#sdlc-pipeline .sp-tip-loop { font-style: italic; }
+#sdlc-pipeline .sp-tip b {
+  display: block; font-style: normal; font-weight: 600;
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase;
+  color: color-mix(in oklab, var(--sp-bg) 70%, var(--sp-text)); margin-bottom: 3px;
+}
+
+/* ---------- control tooltip (legend type-pills + detail-level buttons) ---------- */
+#sdlc-pipeline .sp-ctip {
+  position: absolute; z-index: 40; width: max-content; max-width: 260px; white-space: normal;
+  background: var(--sp-text); color: var(--sp-bg);
+  border-radius: 6px; padding: 8px 11px;
+  font-size: 12.5px; line-height: 1.4;
+  box-shadow: 0 6px 22px rgba(0,0,0,.18);
+  opacity: 0; visibility: hidden;
+  transform: translateX(-50%) translateY(-4px);
+  transition: opacity .16s ease, transform .16s ease;
+  pointer-events: none;
+}
+#sdlc-pipeline .sp-ctip[data-show="true"] { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+#sdlc-pipeline .sp-ctip b {
+  display: block; font-weight: 600;
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase;
+  color: color-mix(in oklab, var(--sp-bg) 70%, var(--sp-text)); margin-bottom: 3px;
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  #sdlc-pipeline *,
+  #sdlc-pipeline .sp-tip,
+  #sdlc-pipeline .sp-ctip { transition: none !important; }
+  /* handwritten nudge stays visible, just no fade-in transform */
+  #sdlc-pipeline[data-demo="idle"] .sp-note { opacity: 1; transform: none; }
+}
+</style>
+
+<script>
+(function () {
+  "use strict";
+
+  /* =================================================================== */
+  /*  DATA  — edit here. One array, top of file.                          */
+  /*  phase: { name, minLevel, slots[] }                                  */
+  /*  slot:  { name, cap, level, loop }                                   */
+  /*    cap   — capability key, drives colour (see CAPS below)            */
+  /*    level — lowest detail level at which the slot appears (1|2|3)     */
+  /*    loop  — how this agent self-evaluates (its feedback loop)         */
+  /* =================================================================== */
+  /*  slot:  { name, cap, level, desc, loop }
+   *    desc  — what this agent actually does (shown on hover)
+   *    loop  — its eval loop: how it judges whether it did well            */
+  var PHASES = [
+    { name: "Ideation", minLevel: 2, slots: [
+      { name: "Market research",         cap: "read",     level: 2, desc: "Scans the market, competitors and signals to surface where an opportunity is.", loop: "human judges relevance, a weak signal" },
+      { name: "Support-signal mining",   cap: "generate", level: 2, desc: "Mines support tickets, reviews and churn signals into ranked feature demand.", loop: "ticket volume in a cluster drops after the matching feature ships" },
+      { name: "Competitor changelog watch", cap: "read",  level: 2, desc: "Diffs competitor release notes against the roadmap and surfaces feature gaps.", loop: "a PM marks a surfaced gap as real vs. noise" },
+      { name: "Opportunity scoring",     cap: "generate", level: 3, desc: "Ranks candidate bets by expected value to focus the roadmap.", loop: "did the picked bets ship and matter" },
+    ]},
+    { name: "Spec", minLevel: 2, slots: [
+      { name: "Spec drafting",           cap: "generate", level: 2, desc: "Turns an idea into a written, reviewable specification.", loop: "ambiguity check passes and a human accepts" },
+      { name: "Acceptance criteria",     cap: "generate", level: 2, desc: "Turns a user story into Given/When/Then criteria a test can implement.", loop: "criteria survive into tests without rewrite" },
+      { name: "Ambiguity check",         cap: "read",     level: 3, desc: "Reads the spec for gaps, contradictions and undefined behaviour.", loop: "gaps caught now vs. surfacing later in review" },
+      { name: "Telemetry contract",      cap: "generate", level: 3, desc: "Specs the analytics events and success metrics the feature must emit, before code.", loop: "post-launch the metrics exist and someone queries them" },
+      { name: "NFR gap check",           cap: "read",     level: 3, desc: "Flags missing non-functional requirements: perf, security, a11y, retention.", loop: "a reviewer confirms a flag was a real gap" },
+      { name: "Regulatory mapping",      cap: "read",     level: 3, desc: "Tags spec items with the regimes they touch (GDPR, DORA, EU AI Act).", loop: "compliance sign-off agrees with the tags" },
+    ]},
+    { name: "Design", minLevel: 2, slots: [
+      { name: "Architecture",            cap: "generate", level: 2, desc: "Proposes the system design and how the pieces fit together.", loop: "fit check passes; downstream rework rate" },
+      { name: "ADR drafting",            cap: "generate", level: 2, desc: "Distills design threads into architecture decision records with tradeoffs.", loop: "later 'why is it like this' is answered by the record" },
+      { name: "Threat model",            cap: "generate", level: 2, desc: "Produces a STRIDE-style threat model and data-flow diagram from the design.", loop: "later pentest findings fall inside the modeled threats" },
+      { name: "Fit check",               cap: "read",     level: 3, desc: "Checks the design against constraints and the existing architecture.", loop: "an architect confirms" },
+      { name: "Migration planner",       cap: "generate", level: 3, desc: "Plans forward and backward compatible DB migration steps plus rollback.", loop: "migration and rollback both apply cleanly in CI" },
+      { name: "Cost-to-serve forecast",  cap: "read",     level: 3, desc: "Prices the proposed architecture per request and per tenant before it exists.", loop: "forecast vs. the first month's cloud invoice" },
+      { name: "API contract drafter",    cap: "generate", level: 3, desc: "Drafts OpenAPI or proto from the spec.", loop: "contract passes lint and review, no breaking-change flag" },
+      { name: "PII data-flow map",       cap: "generate", level: 3, desc: "Maps where personal data enters, moves and rests; feeds the DPIA.", loop: "matches the DPIA reviewer's findings" },
+    ]},
+    { name: "Plan", minLevel: 1, slots: [
+      { name: "Task breakdown",          cap: "generate",      level: 1, desc: "Splits the work into ordered, right-sized tasks.", loop: "tasks complete without re-scoping; human reorders" },
+      { name: "Ticket readiness gate",   cap: "gate",          level: 2, desc: "Rejects tickets missing repro steps, acceptance criteria, owner, or DoD.", loop: "deterministic, no eval loop" },
+      { name: "Agent-vs-human router",   cap: "read",          level: 2, desc: "Scores each task as agent-ready, human-only, or pair, and routes it.", loop: "rework rate per routing decision" },
+      { name: "Dependency map",          cap: "read",          level: 3, desc: "Maps what blocks what so the work is sequenced correctly.", loop: "blockers that surface late" },
+      { name: "Estimation calibration",  cap: "read",          level: 3, desc: "Compares new estimates against historical actuals; flags systematic optimism.", loop: "estimate variance drops across sprints" },
+    ]},
+    { name: "Code", minLevel: 1, slots: [
+      { name: "Code generation",         cap: "generate",      level: 1, desc: "Writes the implementation from the task and its context.", loop: "compiles, tests pass, review approves" },
+      { name: "Code formatting",         cap: "deterministic", level: 2, desc: "Auto-formats code to a fixed style on save or commit (Black, ruff, Prettier).", loop: "deterministic, no eval loop" },
+      { name: "Linting",                 cap: "deterministic", level: 2, desc: "Runs static lint rules and reports or fixes violations.", loop: "deterministic, no eval loop" },
+      { name: "Secret-leak gate",        cap: "gate",          level: 2, desc: "Blocks any commit containing credentials or tokens, via patterns plus entropy.", loop: "deterministic, no eval loop" },
+      { name: "Test generation",         cap: "generate",      level: 2, desc: "Writes tests that pin down the intended behaviour.", loop: "tests fail on injected bugs (mutation)" },
+      { name: "Boilerplate scaffolder",  cap: "deterministic", level: 3, desc: "Generates a new service or module skeleton from an internal template.", loop: "deterministic, no eval loop" },
+      { name: "Codemod runner",          cap: "deterministic", level: 3, desc: "Applies mechanical AST rewrites (renames, API swaps) across the repo in one pass.", loop: "deterministic, no eval loop" },
+      { name: "Feature-flag scaffolding",cap: "generate",      level: 3, desc: "Wraps new code paths in flags with kill switch, owner and expiry pre-wired.", loop: "flag is used during rollout and removed on schedule" },
+      { name: "Docstring backfill",      cap: "generate",      level: 3, desc: "Writes or refreshes docstrings for functions and classes that lack them.", loop: "doc lint passes and a human spot-check agrees" },
+      { name: "Type-annotation backfill",cap: "generate",      level: 3, desc: "Adds type hints to untyped legacy functions, one module at a time.", loop: "type checker passes clean with no new ignores" },
+      { name: "Context retrieval",       cap: "read",          level: 3, desc: "Pulls the right files, docs and prior code into context.", loop: "was the retrieved context actually used and right" },
+    ]},
+    { name: "Review", minLevel: 1, slots: [
+      { name: "Code review",             cap: "read",          level: 1, desc: "Reads the diff for bugs, style and intent, and comments.", loop: "human agrees or overrides; were flagged issues real" },
+      { name: "Security gate",           cap: "gate",          level: 2, desc: "Hard-blocks the change on a security-policy violation.", loop: "false-positive rate, override log" },
+      { name: "License compliance gate", cap: "gate",          level: 2, desc: "Blocks a PR or dependency whose license conflicts with distribution terms.", loop: "deterministic, no eval loop" },
+      { name: "Breaking-change detector",cap: "deterministic", level: 2, desc: "Diffs the public API surface; blocks if breaking without a version bump.", loop: "deterministic, no eval loop" },
+      { name: "Reviewer auto-assign",    cap: "deterministic", level: 2, desc: "Assigns reviewers via CODEOWNERS plus load balancing and recent context.", loop: "deterministic, no eval loop" },
+      { name: "PR description writer",    cap: "generate",      level: 2, desc: "Writes the PR body from the diff and linked ticket.", loop: "how much the reviewer edits it before merge" },
+      { name: "Intent check",            cap: "read",          level: 3, desc: "Confirms the change actually does what the spec asked.", loop: "matches the spec; human confirms" },
+      { name: "Adversarial 2nd review",  cap: "read",          level: 3, desc: "A second, independent model reviews the same diff blind.", loop: "agreement rate between first and second review over time" },
+      { name: "Nit sweeper",             cap: "autonomous",    level: 3, desc: "Applies trivial review comments (typos, renames, formatting) to the branch.", loop: "pushed fixups accepted without further comment" },
+      { name: "PR size gate",            cap: "deterministic", level: 3, desc: "Warns or blocks when a PR exceeds a line or file-count threshold.", loop: "deterministic, no eval loop" },
+    ]},
+    { name: "Test", minLevel: 1, slots: [
+      { name: "Test execution",          cap: "deterministic", level: 1, desc: "Runs the suite the same way every time and reports pass/fail. Dealing with the failures is a separate agent's job.", loop: "deterministic, no eval loop" },
+      { name: "Flaky-test quarantine",   cap: "autonomous",    level: 2, desc: "Detects flakes statistically, quarantines them, files the ticket, tracks recidivism.", loop: "false-quarantine rate; suite stability after removal" },
+      { name: "Ephemeral preview env",   cap: "deterministic", level: 2, desc: "Spins a seeded throwaway per-PR environment, posts the URL, tears it down on merge.", loop: "deterministic, no eval loop" },
+      { name: "Visual regression",       cap: "deterministic", level: 2, desc: "Pixel-diffs UI screenshots against a baseline at a fixed threshold.", loop: "deterministic, no eval loop" },
+      { name: "Contract-test broker",    cap: "gate",          level: 2, desc: "Runs consumer/provider contract tests (Pact) and blocks incompatible pairs.", loop: "downstream integration break rate" },
+      { name: "Perf/load budget gate",   cap: "gate",          level: 2, desc: "Load-tests the preview and blocks when latency or memory exceeds the budget.", loop: "deterministic, no eval loop" },
+      { name: "Accessibility scan",      cap: "deterministic", level: 3, desc: "Runs a fixed WCAG ruleset (axe-core) against rendered pages on every PR.", loop: "deterministic, no eval loop" },
+      { name: "Fixture synthesizer",     cap: "generate",      level: 3, desc: "Generates realistic and edge-case test fixtures matching a schema.", loop: "fixtures catch injected regressions and pass schema validation" },
+      { name: "Property-test author",    cap: "generate",      level: 3, desc: "Writes property-based and fuzz tests for parser-shaped and money-shaped code.", loop: "new invariant violations found per fuzz hour" },
+      { name: "Mutation-test analyzer",  cap: "read",          level: 3, desc: "Runs mutation testing and names the tests that kill no mutants.", loop: "mutants killed after the author acts" },
+      { name: "Coverage gaps",           cap: "read",          level: 3, desc: "Finds untested paths that are worth covering.", loop: "coverage delta after adding tests" },
+    ]},
+    { name: "Build", minLevel: 1, slots: [
+      { name: "Build pipeline",          cap: "deterministic", level: 1, desc: "Compiles and packages the artifact, the same scripted steps every time.", loop: "deterministic, no eval loop" },
+      { name: "SBOM generation",         cap: "deterministic", level: 2, desc: "Produces a signed CycloneDX/SPDX bill of materials for every artifact.", loop: "deterministic, no eval loop" },
+      { name: "Artifact signing",        cap: "deterministic", level: 2, desc: "Signs artifacts with build provenance (cosign); the registry rejects unsigned images.", loop: "deterministic, no eval loop" },
+      { name: "Dependency CVE scan",     cap: "deterministic", level: 2, desc: "Scans build dependencies against a CVE database; fails above a severity threshold.", loop: "deterministic, no eval loop" },
+      { name: "Reproducible-build check",cap: "deterministic", level: 3, desc: "Builds twice and diffs the hashes; nondeterminism fails the build.", loop: "deterministic, no eval loop" },
+      { name: "Image slimmer",           cap: "generate",      level: 3, desc: "Shrinks container images: multi-stage/distroless, digest pins, dropped packages.", loop: "image size and CVE count both drop" },
+      { name: "Base-image pinner",       cap: "deterministic", level: 3, desc: "Rewrites FROM lines to a resolved digest instead of a floating tag.", loop: "deterministic, no eval loop" },
+      { name: "Lockfile drift gate",     cap: "gate",          level: 3, desc: "Blocks a PR where the manifest changed but the lockfile was not regenerated.", loop: "deterministic, no eval loop" },
+      { name: "Failure triage",          cap: "read",          level: 3, desc: "Diagnoses why a build broke.", loop: "was the diagnosed cause the real fix" },
+    ]},
+    { name: "Release", minLevel: 2, slots: [
+      { name: "Release-readiness gate",  cap: "gate",          level: 2, desc: "Blocks the cut until docs, migration tests, approvals and rollback plan are green.", loop: "post-release incident rate on passed vs. bypassed" },
+      { name: "Release notes",           cap: "generate",      level: 2, desc: "Drafts human-readable notes from the merged changes.", loop: "human edits before publish" },
+      { name: "Version & tag",           cap: "deterministic", level: 2, desc: "Applies semver and tags the release, rule-based, not a judgement call.", loop: "deterministic, no eval loop" },
+      { name: "Backport router",         cap: "generate",      level: 2, desc: "Detects when a merged fix must also land on other supported release branches and opens the cherry-pick PRs.", loop: "backported PRs merge without conflict escalation" },
+      { name: "Changelog assembler",     cap: "generate",      level: 3, desc: "Builds the changelog from merged PRs and the exact commit range since last tag.", loop: "how much a human edits it before publish" },
+      { name: "Flag debt collector",     cap: "autonomous",    level: 3, desc: "Finds flags at 100 percent for 30 days and opens removal PRs.", loop: "removal PRs merged without revert" },
+      { name: "Rollback rehearsal",      cap: "autonomous",    level: 3, desc: "Executes the rollback path in staging before the real rollout proceeds.", loop: "drill succeeds; real rollbacks match rehearsed timings" },
+      { name: "Deprecation herald",      cap: "autonomous",    level: 3, desc: "Notifies exactly the consumers whose telemetry shows use of a deprecated API.", loop: "share of consumers migrated before the removal date" },
+    ]},
+    { name: "Deploy", minLevel: 1, slots: [
+      { name: "Run deploy",              cap: "deterministic", level: 1, desc: "Ships the build out via a scripted, repeatable pipeline. A human usually triggers it; the agents watch what happens after.", loop: "deterministic, no eval loop" },
+      { name: "Progressive rollout",     cap: "autonomous",    level: 2, desc: "Canaries the deploy, moves live traffic in fixed steps, watches SLOs, promotes or halts.", loop: "canary metrics vs. baseline before advancing" },
+      { name: "Auto-rollback on SLO",    cap: "autonomous",    level: 2, desc: "Rolls back when the error budget burns past a threshold.", loop: "whether the rollback actually restored the SLO" },
+      { name: "Deploy freeze gate",      cap: "gate",          level: 2, desc: "Blocks deploys during freeze windows, on-call gaps and dead zones.", loop: "deterministic, no eval loop" },
+      { name: "GitOps drift reconciler", cap: "deterministic", level: 2, desc: "Reconciles live state to declared IaC; reverts or PRs the difference.", loop: "deterministic, no eval loop" },
+      { name: "Guarded migration runner",cap: "autonomous",    level: 2, desc: "Runs DB migrations with lock timeouts, a pre-backup, and an automatic rollback path.", loop: "migration succeeds with no data loss; rollback tested" },
+      { name: "Post-deploy smoke test",  cap: "deterministic", level: 2, desc: "Runs fixed synthetic checks right after a deploy; gates the traffic ramp.", loop: "deterministic, no eval loop" },
+      { name: "Rollout triage",          cap: "autonomous",    level: 3, desc: "Watches the rollout and rolls back if it goes wrong.", loop: "did rollback restore health" },
+      { name: "Blast-radius estimator",  cap: "read",          level: 3, desc: "Estimates which services and customers a change touches, before deploy.", loop: "predicted vs. actually affected surface" },
+      { name: "Terraform plan gate",     cap: "gate",          level: 3, desc: "Blocks apply until a human or policy engine approves the generated plan diff.", loop: "deterministic, no eval loop" },
+      { name: "IaC misconfig scan",      cap: "deterministic", level: 3, desc: "Flags open buckets and over-broad IAM in Terraform before apply.", loop: "deterministic, no eval loop" },
+    ]},
+    { name: "Monitor", minLevel: 1, slots: [
+      { name: "Anomaly detection",       cap: "autonomous",    level: 1, desc: "Watches live metrics and flags abnormal behaviour.", loop: "precision vs. actual incidents; ack/dismiss" },
+      { name: "SLO burn-rate watcher",   cap: "deterministic", level: 2, desc: "Computes error-budget burn and fires multi-window alerts, paging only on fast burn.", loop: "deterministic, no eval loop" },
+      { name: "Synthetic-journey probe", cap: "deterministic", level: 2, desc: "Probes signup, login and checkout from outside the network on a schedule.", loop: "deterministic, no eval loop" },
+      { name: "Alert deduplication",     cap: "deterministic", level: 2, desc: "Correlates simultaneous alerts and repeated pages into a single incident.", loop: "deterministic, no eval loop" },
+      { name: "Cost anomaly watcher",    cap: "read",          level: 2, desc: "Flags cloud-spend spikes by service and tag against a historical baseline.", loop: "flagged spikes that were genuine waste" },
+      { name: "Alert enrich",            cap: "read",          level: 3, desc: "Adds context to an alert to speed up the response.", loop: "did enrichment cut time-to-resolve" },
+      { name: "Alert-rule tuner",        cap: "generate",      level: 3, desc: "Analyzes alert history and proposes threshold and grouping changes to cut noise.", loop: "change in alert precision and recall" },
+      { name: "Log noise reduction",     cap: "deterministic", level: 3, desc: "Dedupes and fingerprints repetitive log lines before they reach alerting.", loop: "deterministic, no eval loop" },
+      { name: "Cron heartbeat watchdog", cap: "deterministic", level: 3, desc: "Pages when a scheduled job fails to send its heartbeat within its window.", loop: "deterministic, no eval loop" },
+      { name: "Queue backlog alert",     cap: "deterministic", level: 3, desc: "Pages when queue depth or consumer lag crosses a threshold for a sustained period.", loop: "deterministic, no eval loop" },
+    ]},
+    { name: "Incident", minLevel: 2, slots: [
+      { name: "Root cause",              cap: "autonomous",    level: 2, desc: "Traces an incident back to its underlying cause.", loop: "confirmed as the real cause at fix time" },
+      { name: "Postmortem drafter",      cap: "generate",      level: 2, desc: "Reconstructs the timeline from chat, alerts and deploy logs; drafts the blameless postmortem.", loop: "correction count from the author; no repeat" },
+      { name: "Status-page comms",       cap: "generate",      level: 2, desc: "Drafts status-page and stakeholder updates on a fixed cadence during the incident.", loop: "incident commander ships drafts with minimal edits" },
+      { name: "Incident channel boot",   cap: "deterministic", level: 2, desc: "Pages the right on-call, opens the bridge, links dashboards, assigns roles.", loop: "deterministic, no eval loop" },
+      { name: "Recent-deploy correlator",cap: "read",          level: 2, desc: "Cross-references incident start against the deploy log to surface the likely trigger.", loop: "reviewer confirms or rejects the flagged deploy" },
+      { name: "Runbook suggest",         cap: "read",          level: 3, desc: "Suggests the runbook steps that fit the incident.", loop: "did the suggested runbook work" },
+      { name: "Severity classification", cap: "read",          level: 3, desc: "Assesses an incoming incident against severity criteria and proposes a level.", loop: "proposed severity matches what responders confirm" },
+      { name: "Runbook executor",        cap: "autonomous",    level: 3, desc: "Executes an approved runbook step by step (restart, failover).", loop: "each step verified as having its intended effect" },
+    ]},
+    { name: "Triage / Fix", minLevel: 2, slots: [
+      { name: "Repro synthesizer",       cap: "generate",      level: 2, desc: "Turns a bug report into a failing test before any fix is attempted.", loop: "test fails pre-fix and passes post-fix" },
+      { name: "Patch generation",        cap: "autonomous",    level: 2, desc: "Writes and verifies a code fix to the product itself; needs runtime and dev-env access.", loop: "run the code, bug gone, regression tests green" },
+      { name: "Fix verification",        cap: "autonomous",    level: 2, desc: "Re-runs the failing test or repro after a patch, plus related tests.", loop: "test passes post-patch; no regressions" },
+      { name: "Regression bisector",     cap: "deterministic", level: 2, desc: "Drives git bisect with the failing test to the guilty commit.", loop: "deterministic, no eval loop" },
+      { name: "Duplicate-issue detect",  cap: "read",          level: 2, desc: "Matches incoming issues to existing ones by similarity, links and merges threads.", loop: "reopen rate of folded issues" },
+      { name: "Impact analysis",         cap: "read",          level: 3, desc: "Works out who and what the issue actually affected.", loop: "who was actually hit vs. predicted" },
+      { name: "Exception-to-owner",      cap: "deterministic", level: 3, desc: "Routes an exception to the owning team via CODEOWNERS and a symbol map.", loop: "deterministic, no eval loop" },
+      { name: "Crash fingerprinting",    cap: "deterministic", level: 3, desc: "Groups crash reports by stack-trace hash into a single ticket.", loop: "deterministic, no eval loop" },
+    ]},
+    { name: "Maintain", minLevel: 2, slots: [
+      { name: "Dependency PRs",          cap: "autonomous",    level: 2, desc: "Opens and verifies dependency-upgrade PRs.", loop: "CI green after the upgrade" },
+      { name: "Certificate warden",      cap: "deterministic", level: 2, desc: "Tracks TLS certs, domains and API keys; renews or pages well before expiry.", loop: "deterministic, no eval loop" },
+      { name: "Backup restore drill",    cap: "autonomous",    level: 2, desc: "Restores last night's backup into a scratch environment and verifies checksums.", loop: "restore succeeds; measured RTO and RPO numbers" },
+      { name: "Zombie resource sweeper", cap: "autonomous",    level: 2, desc: "Finds unattached volumes, idle load balancers and forgotten test stacks; deletes after an owner timeout.", loop: "spend recovered; a restore request is the false-delete signal" },
+      { name: "Dead-code archival",      cap: "autonomous",    level: 3, desc: "Removes unused code once it is proven safe to remove.", loop: "nothing breaks after removal" },
+      { name: "Secret rotation",         cap: "autonomous",    level: 3, desc: "Rotates credentials through overlap windows on schedule, no downtime.", loop: "zero auth failures during and after rotation" },
+      { name: "Rightsizing advisor",     cap: "read",          level: 3, desc: "Reads utilization percentiles and proposes instance and database downsizes.", loop: "post-change utilization stays in band with no perf alerts" },
+      { name: "Data-retention enforcer", cap: "deterministic", level: 3, desc: "Purges or anonymizes data past its retention window on a fixed schedule.", loop: "deterministic, no eval loop" },
+      { name: "Access recertification",  cap: "read",          level: 3, desc: "Reviews who has access to what and drafts quarterly revocation lists from usage.", loop: "flagged access confirmed revoked or justified" },
+      { name: "EOL horizon scan",        cap: "deterministic", level: 3, desc: "Tracks end-of-life dates for runtimes and libraries; files tickets a quarter ahead.", loop: "deterministic, no eval loop" },
+      { name: "Tech-debt scoring",       cap: "read",          level: 3, desc: "Scores and ranks debt by its likely future pain.", loop: "did the high-scored debt actually cause pain" },
+    ]},
+    { name: "AgentOps", minLevel: 3, slots: [
+      { name: "Destructive-tool gate",   cap: "gate",          level: 3, desc: "Requires human approval before an agent calls a destructive tool.", loop: "harmful actions blocked, then approved or denied correctly" },
+      { name: "Runaway-agent killer",    cap: "deterministic", level: 3, desc: "Kills agents that exceed step, time, or loop budgets.", loop: "deterministic, no eval loop" },
+      { name: "Agent-cost budgeter",     cap: "deterministic", level: 3, desc: "Enforces per-run LLM budget caps; throttles, kills and pages on overrun.", loop: "deterministic, no eval loop" },
+      { name: "Prompt-regression gate",  cap: "gate",          level: 3, desc: "Replays a golden set on every prompt or model change; a score drop blocks the ship.", loop: "gate threshold vs. production regression rate" },
+      { name: "Agent-trace evaluator",   cap: "read",          level: 3, desc: "Samples production agent transcripts and scores them for loops, tool misuse and policy breaks.", loop: "agreement with periodic human audit of the same sample" },
+      { name: "Grounding cross-checker", cap: "read",          level: 3, desc: "Verifies an agent's claims against the cited source before surfacing them.", loop: "contradiction catch rate" },
+      { name: "Least-privilege trimmer", cap: "read",          level: 3, desc: "Compares tools granted to each agent against tools actually used; proposes removals.", loop: "no capability regressions after the trims land" },
+      { name: "Model sunset migrator",   cap: "generate",      level: 3, desc: "On provider deprecation, re-runs the eval suite across candidate models and drafts the migration PR.", loop: "eval parity or better after migration" },
+      { name: "Escalation triage",       cap: "read",          level: 3, desc: "Classifies agent-to-human handoffs as avoidable or necessary; feeds prompt and tool fixes.", loop: "avoidable-handoff rate trend" },
+    ]},
+  ];
+
+  /* capability metadata: key -> { label, var } (var matches the CSS tints) */
+  var CAPS = {
+    read:          { label: "Read & advise",     css: "var(--cap-read)",          tip: "Reads code, diffs or context and advises, never changes anything on its own." },
+    generate:      { label: "Generate",          css: "var(--cap-generate)",      tip: "Produces new work (code, tests, docs) for a human to accept or reject." },
+    autonomous:    { label: "Autonomous action", css: "var(--cap-autonomous)",    tip: "Acts on the system directly (merges, deploys, files) inside set guardrails." },
+    deterministic: { label: "Non-AI deterministic steps",css: "var(--cap-deterministic)", tip: "Fixed, rule-based automation with no model in the loop. Same input, same output." },
+    gate:          { label: "Gate",              css: "var(--cap-gate)",          tip: "A hard checkpoint that blocks progress until a policy or condition is met." },
+  };
+  var CAP_ORDER = ["read", "generate", "autonomous", "deterministic", "gate"];
+
+  /* detail levels — labels + which level the page starts on */
+  var LEVELS = [
+    { n: 1, label: "Napkin",      tip: "The irreducible spine. One agent per core phase, the shape a skeptic nods at." },
+    { n: 2, label: "Team",        tip: "What a competent team would actually staff. Every phase, the obviously real slots." },
+    { n: 3, label: "Fever Dream", tip: "Everything that survived the cut. Every phase, every agent, deliberately too much." },
+  ];
+  var START_LEVEL = 1;
+
+  var MARKER = "\u21BB";     // ↻  loop glyph — marks an AI slot's eval loop
+  var DET_MARK = "\u2713";   // ✓  marks a deterministic (non-AI) check — no loop
+
+  /* =================================================================== */
+  /*  BUILD                                                               */
+  /* =================================================================== */
+  var root = document.getElementById("sdlc-pipeline");
+  if (!root) return;
+
+  var state = { level: START_LEVEL, filter: null, view: "read", interacted: false, demoed: false };
+
+  // ---- header (title + dek) ----
+  var head = el("div", "sp-head");
+  var headText = el("div");
+  headText.appendChild(el("p", "sp-title", "The AI-assisted SDLC"));
+  var dek = el("p", "sp-dek");
+  dek.textContent = "A forward pipeline of AI action slots. Each carries its own feedback loop, and the Improver below harvests them all.";
+  headText.appendChild(dek);
+  head.appendChild(headText);
+  root.appendChild(head);
+
+  // ---- controls band: type (legend) | handwritten nudge | detail level ----
+  var controls = el("div", "sp-controls");
+
+  // legend (the "type" buttons: click to highlight one kind of agent)
+  var legend = el("div", "sp-legend");
+  legend.setAttribute("role", "group");
+  legend.setAttribute("aria-label", "Capability legend. Click to highlight one kind of agent");
+  CAP_ORDER.forEach(function (key) {
+    var b = el("button");
+    b.type = "button";
+    b.style.setProperty("--c", CAPS[key].css);
+    b.setAttribute("aria-pressed", "false");
+    b.setAttribute("aria-label", "Highlight " + CAPS[key].label + " agents");
+    var sw = el("span", "sp-swatch");
+    var tx = el("span", null, CAPS[key].label);
+    b.appendChild(sw); b.appendChild(tx);
+    b.addEventListener("click", function () { markDemoDone(); setFilter(state.filter === key ? null : key); });
+    bindCtrlTip(b, CAPS[key].label, CAPS[key].tip);
+    legend.appendChild(b);
+    b._capKey = key;
+  });
+  // detail level (the "detail" buttons: Napkin / Team / Fever Dream)
+  var detail = el("div", "sp-detail");
+  detail.appendChild(el("span", "sp-detail-label", "Detail level"));
+  var seg = el("div", "sp-seg");
+  seg.setAttribute("role", "radiogroup");
+  seg.setAttribute("aria-label", "Detail level");
+  var segBtns = LEVELS.map(function (lv) {
+    var b = el("button", null, lv.label);
+    b.type = "button";
+    b.setAttribute("role", "radio");
+    b.setAttribute("aria-label", "Level " + lv.n + ": " + lv.label);
+    b.addEventListener("click", function () { markDemoDone(); setLevel(lv.n); });
+    b.addEventListener("keydown", function (e) { segKeys(e, lv.n); });
+    bindCtrlTip(b, lv.label, lv.tip);
+    seg.appendChild(b);
+    return { n: lv.n, btn: b };
+  });
+  detail.appendChild(seg);
+
+  // handwritten nudges: one per control group, each hugging its group so the
+  // hand-drawn arrow is always short + adjacent no matter how wide the band gets
+  // (retire on first control use; show every page load)
+  var ARR = 'class="sp-note-arr" viewBox="0 0 56 26" fill="none" stroke="currentColor" ' +
+    'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
+  var noteLeft = el("div", "sp-note");
+  noteLeft.setAttribute("aria-hidden", "true");
+  noteLeft.innerHTML =
+    '<svg ' + ARR + '><path d="M54 9 C41 6 21 6 5 17"/><path d="M14 10 L4 17 L15 21"/></svg>' +
+    '<span class="sp-note-text">try these!</span>';
+  var noteRight = el("div", "sp-note");
+  noteRight.setAttribute("aria-hidden", "true");
+  noteRight.innerHTML =
+    '<span class="sp-note-text">try these!</span>' +
+    '<svg ' + ARR + '><path d="M2 9 C15 6 35 6 51 17"/><path d="M42 10 L52 17 L41 21"/></svg>';
+
+  // left cluster hugs the left edge (legend + its arrow), right cluster the
+  // right edge (detail + its arrow); space-between pushes them apart
+  var leftGroup = el("div", "sp-cluster");
+  leftGroup.appendChild(legend);
+  leftGroup.appendChild(noteLeft);
+  controls.appendChild(leftGroup);
+
+  var rightGroup = el("div", "sp-cluster");
+  rightGroup.appendChild(noteRight);
+  rightGroup.appendChild(detail);
+  controls.appendChild(rightGroup);
+
+  root.appendChild(controls);
+
+  // ---- viewport (relative anchor) > scroll region > inner ----
+  var viewport = el("div", "sp-viewport");
+  var scroll = el("div", "sp-scroll");
+  var inner = el("div", "sp-inner");
+  scroll.appendChild(inner);
+  viewport.appendChild(scroll);
+
+  // edge fade gradients (decorative; visibility driven by updateFades)
+  var fadeL = el("div", "sp-fade sp-fade-l");
+  var fadeR = el("div", "sp-fade sp-fade-r");
+  fadeL.setAttribute("aria-hidden", "true");
+  fadeR.setAttribute("aria-hidden", "true");
+  viewport.appendChild(fadeL);
+  viewport.appendChild(fadeR);
+
+  // "drag to explore" hint (fades after first interaction)
+  var hint = el("div", "sp-hint");
+  hint.setAttribute("aria-hidden", "true");
+  hint.innerHTML = '<span>Drag to explore</span>' +
+    '<svg viewBox="0 0 16 9" fill="none" stroke="currentColor" stroke-width="1.3">' +
+    '<line x1="0" y1="4.5" x2="13" y2="4.5"/><path d="M9.5 1 14 4.5 9.5 8"/></svg>';
+  viewport.appendChild(hint);
+
+  root.appendChild(viewport);
+
+  var row = el("div", "sp-row");
+  inner.appendChild(row);
+
+  // we keep references for level/filter updates
+  var phaseEls = [];   // { phase, el, arrowEl, slotEls[] }
+
+  PHASES.forEach(function (phase, i) {
+    // forward arrow (before every phase except the first)
+    var arrowEl = null;
+    if (i > 0) {
+      arrowEl = el("div", "sp-arrow");
+      arrowEl.setAttribute("aria-hidden", "true");
+      arrowEl.innerHTML =
+        '<svg viewBox="0 0 22 12" fill="none" stroke="currentColor" stroke-width="1.3">' +
+        '<line x1="0" y1="6" x2="19" y2="6"/><path d="M14 1.5 19.5 6 14 10.5"/></svg>';
+      row.appendChild(arrowEl);
+    }
+
+    var col = el("div", "sp-phase");
+    var inner2 = el("div", "sp-phase-inner");
+
+    var ph = el("div", "sp-phase-head");
+    ph.appendChild(el("span", "sp-phase-name", phase.name));
+    inner2.appendChild(ph);
+
+    var slots = el("div", "sp-slots");
+    var slotEls = phase.slots.map(function (slot) {
+      var isDet = slot.cap === "deterministic";
+      var s = el("div", "sp-slot");
+      s.style.setProperty("--c", CAPS[slot.cap].css);
+      s.tabIndex = 0;
+      s.setAttribute("role", "group");
+      s.setAttribute("data-cap", slot.cap);
+      s.setAttribute("aria-label",
+        slot.name + ". " + CAPS[slot.cap].label + ". " + slot.desc + " " +
+        (isDet ? "Deterministic. No eval loop needed."
+               : "Eval loop: " + slot.loop + "."));
+
+      var top = el("div", "sp-slot-top");
+      var mk = el("span", "sp-marker", isDet ? DET_MARK : MARKER);
+      mk.setAttribute("aria-hidden", "true");
+      mk.title = isDet ? "deterministic check, no eval loop" : "eval loop";
+      top.appendChild(mk);
+      top.appendChild(el("span", "sp-slot-name", slot.name));
+      s.appendChild(top);
+      s.appendChild(el("span", "sp-cap", CAPS[slot.cap].label));
+
+      // inline block (Level 1): what it does + its eval loop
+      var li = el("div", "sp-loop-inline");
+      li.appendChild(el("p", "sp-desc", slot.desc));
+      var lr = el("div", "sp-loop-row");
+      if (isDet) {
+        lr.classList.add("sp-loop-det");
+        lr.appendChild(el("span", "sp-loop-lbl", "No eval loop"));
+        lr.appendChild(el("span", "sp-loop-txt", "scripted, deterministic"));
+      } else {
+        lr.appendChild(el("span", "sp-loop-lbl", "Eval loop"));
+        lr.appendChild(el("span", "sp-loop-txt", slot.loop));
+      }
+      li.appendChild(lr);
+      s.appendChild(li);
+
+      // tooltip wiring (used at L2/L3 where the inline block is hidden)
+      bindTip(s, slot, isDet);
+
+      slots.appendChild(s);
+      return { slot: slot, el: s };
+    });
+    inner2.appendChild(slots);
+    col.appendChild(inner2);
+    row.appendChild(col);
+
+    phaseEls.push({ phase: phase, el: col, arrowEl: arrowEl, slotEls: slotEls });
+  });
+
+  // ---- connector row (risers mirror the phase columns; bus spans full width) ----
+  var conns = el("div", "sp-conns");
+  conns.setAttribute("aria-hidden", "true");
+  inner.appendChild(conns);
+  phaseEls.forEach(function (pe, i) {
+    if (i > 0) {
+      var gap = el("div", "sp-conn-gap");
+      pe._connGap = gap;
+      conns.appendChild(gap);
+    }
+    var c = el("div", "sp-conn");
+    pe._conn = c;
+    conns.appendChild(c);
+  });
+  conns.appendChild(el("div", "sp-bus"));   // the horizontal harvest line
+
+  // ---- Improver node ----
+  var improver = el("div", "sp-improver");
+  improver.setAttribute("role", "group");
+  improver.setAttribute("aria-label", "The Improver: improves the agents themselves, not the product code.");
+  var badge = el("div", "sp-improver-badge");
+  badge.appendChild(el("div", "sp-improver-kicker", "The bottom of the line"));
+  badge.appendChild(el("div", "sp-improver-name", "Improver"));
+  var iloop = el("div", "sp-improver-loop");
+  iloop.innerHTML = '<span aria-hidden="true">' + MARKER + '</span><span>continuous evaluation</span>';
+  badge.appendChild(iloop);
+  improver.appendChild(badge);
+  var body = el("div", "sp-improver-body");
+  body.innerHTML =
+    "Runs on a trigger or timer. It harvests <strong>every agent's feedback loop</strong>, " +
+    "their logs, and any human comments, then opens MRs that improve <strong>the agents " +
+    "themselves</strong>: their prompts, tools and instructions.";
+  improver.appendChild(body);
+  // Improver lives OUTSIDE the scroll region so it stays centred while the
+  // pipeline scrolls; a stem links it up to the harvest bus.
+  var improverWrap = el("div", "sp-improver-wrap");
+  improverWrap.appendChild(el("div", "sp-improver-stem"));
+  improverWrap.appendChild(improver);
+  root.appendChild(improverWrap);
+
+  // ---- shared tooltip (description + eval loop, shown at L2/L3) ----
+  var tip = el("div", "sp-tip");
+  var tipDesc = el("p", "sp-tip-desc");
+  var tipLabel = el("b", null, "Eval loop");
+  var tipText = el("span", "sp-tip-loop");
+  tip.appendChild(tipDesc);
+  tip.appendChild(tipLabel);
+  tip.appendChild(tipText);
+  root.appendChild(tip);
+
+  // ---- control tooltip (legend type-pills + detail-level buttons) ----
+  var ctip = el("div", "sp-ctip");
+  var ctipTitle = el("b");
+  var ctipBody = el("span");
+  ctip.appendChild(ctipTitle);
+  ctip.appendChild(ctipBody);
+  root.appendChild(ctip);
+
+  function bindCtrlTip(elm, title, text) {
+    var show = function () {
+      ctipTitle.textContent = title;
+      ctipBody.textContent = text;
+      ctip.setAttribute("data-show", "true");
+      var rr = root.getBoundingClientRect();
+      var er = elm.getBoundingClientRect();
+      // centre on the control, then clamp so a right-edge tip stays on-screen
+      var center = er.left - rr.left + er.width / 2;
+      var half = ctip.offsetWidth / 2, pad = 8;
+      if (center < half + pad) center = half + pad;
+      if (center > rr.width - half - pad) center = rr.width - half - pad;
+      ctip.style.left = center + "px";
+      ctip.style.top = (er.bottom - rr.top + 8) + "px";
+    };
+    var hide = function () { ctip.setAttribute("data-show", "false"); };
+    elm.addEventListener("mouseenter", show);
+    elm.addEventListener("mouseleave", hide);
+    elm.addEventListener("focus", show);
+    elm.addEventListener("blur", hide);
+  }
+
+  /* =================================================================== */
+  /*  STATE / RENDER                                                      */
+  /* =================================================================== */
+  function setLevel(level) {
+    state.level = level;
+    root.setAttribute("data-level", String(level));
+    segBtns.forEach(function (sb) {
+      sb.btn.setAttribute("aria-checked", sb.n === level ? "true" : "false");
+      sb.btn.tabIndex = sb.n === level ? 0 : -1;
+    });
+    applyVisibility();
+    // column widths animate, so recompute fades / fit after the transition
+    scheduleReflow();
+  }
+
+  function applyVisibility() {
+    var level = state.level;
+    var prevVisible = false;
+    phaseEls.forEach(function (pe) {
+      var visible = pe.phase.minLevel <= level;
+      pe.el.setAttribute("data-visible", visible ? "true" : "false");
+      if (pe._conn) pe._conn.setAttribute("data-visible", visible ? "true" : "false");
+
+      // leading arrow shows only between two visible phases
+      var arrowVisible = visible && prevVisible;
+      if (pe.arrowEl) pe.arrowEl.setAttribute("data-visible", arrowVisible ? "true" : "false");
+      if (pe._connGap) pe._connGap.setAttribute("data-visible", arrowVisible ? "true" : "false");
+
+      // slots
+      pe.slotEls.forEach(function (se) {
+        var sVisible = visible && se.slot.level <= level;
+        se.el.setAttribute("data-visible", sVisible ? "true" : "false");
+        se.el.tabIndex = sVisible ? 0 : -1;
+      });
+
+      if (visible) prevVisible = true;
+    });
+  }
+
+  function setFilter(key) {
+    state.filter = key;
+    if (key) root.setAttribute("data-filter", key);
+    else root.removeAttribute("data-filter");
+    legend.querySelectorAll("button").forEach(function (b) {
+      b.setAttribute("aria-pressed", b._capKey === key ? "true" : "false");
+    });
+    phaseEls.forEach(function (pe) {
+      pe.slotEls.forEach(function (se) {
+        se.el.setAttribute("data-cap-match", (!key || se.slot.cap === key) ? "true" : "false");
+      });
+    });
+  }
+
+  // segmented-control arrow-key support
+  function segKeys(e, n) {
+    var idx = LEVELS.findIndex(function (l) { return l.n === n; });
+    var next = null;
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") next = LEVELS[Math.min(idx + 1, LEVELS.length - 1)];
+    else if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = LEVELS[Math.max(idx - 1, 0)];
+    if (next) { e.preventDefault(); markDemoDone(); setLevel(next.n); segBtns.find(function (s){return s.n===next.n;}).btn.focus(); }
+  }
+
+  /* =================================================================== */
+  /*  TOOLTIP  (shown for L2/L3 hover & focus; at L1 the loop is inline)  */
+  /* =================================================================== */
+  function bindTip(slotEl, slot, isDet) {
+    var show = function () {
+      tipDesc.textContent = slot.desc;
+      if (isDet) {
+        tipLabel.textContent = "No eval loop";
+        tipText.textContent = "scripted, deterministic";
+      } else {
+        tipLabel.textContent = "Eval loop";
+        tipText.textContent = slot.loop;
+      }
+      tip.setAttribute("data-show", "true");
+      // position relative to root (outside the overflow-clipping scroll region)
+      var ir = root.getBoundingClientRect();
+      var sr = slotEl.getBoundingClientRect();
+      var left = sr.left - ir.left + sr.width / 2;
+      // clamp horizontally so an edge tip stays inside the figure
+      var thalf = tip.offsetWidth / 2, hpad = 8;
+      if (left < thalf + hpad) left = thalf + hpad;
+      if (left > ir.width - thalf - hpad) left = ir.width - thalf - hpad;
+      tip.style.left = left + "px";
+      // place above the slot; flip below if it would clip the top
+      tip.style.top = "0px";
+      var th = tip.offsetHeight;
+      var top = sr.top - ir.top - th - 8;
+      if (top < 0) top = sr.bottom - ir.top + 8;   // flip below
+      tip.style.top = top + "px";
+    };
+    var hide = function () { tip.setAttribute("data-show", "false"); };
+    slotEl.addEventListener("mouseenter", show);
+    slotEl.addEventListener("mouseleave", hide);
+    slotEl.addEventListener("focus", show);
+    slotEl.addEventListener("blur", hide);
+  }
+
+  // hide tooltip on scroll (position would otherwise drift)
+  scroll.addEventListener("scroll", function () {
+    tip.setAttribute("data-show", "false");
+    if (!nudgeAnimating && scroll.scrollLeft > 4) markInteracted();
+    updateFades();
+  });
+
+  /* =================================================================== */
+  /*  VIEW MODE  (Read = legible + scroll ; Overview = scaled to fit)     */
+  /* =================================================================== */
+  function setView(view) {
+    state.view = view;
+    viewBtns.forEach(function (vb) {
+      vb.btn.setAttribute("aria-checked", vb.k === view ? "true" : "false");
+      vb.btn.tabIndex = vb.k === view ? 0 : -1;
+    });
+    applyFit();
+  }
+
+  // scale the inner down so the whole pipeline fits the available width
+  function applyFit() {
+    if (state.view === "fit") {
+      inner.classList.add("sp-fit");
+      scroll.setAttribute("data-fit", "true");
+      inner.style.transform = "none";        // measure at natural size first
+      var avail = scroll.clientWidth;
+      var natural = inner.scrollWidth;
+      var scale = natural > 0 ? Math.min(1, avail / natural) : 1;
+      inner.style.transform = scale < 1 ? "scale(" + scale + ")" : "none";
+      // collapse the dead space the un-scaled layout box would leave below
+      scroll.style.height = (inner.offsetHeight * scale) + "px";
+    } else {
+      inner.classList.remove("sp-fit");
+      scroll.removeAttribute("data-fit");
+      inner.style.transform = "";
+      scroll.style.height = "";
+    }
+    updateFades();
+  }
+
+  function viewKeys(e, k) {
+    var order = ["read", "fit"];
+    var idx = order.indexOf(k), next = null;
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") next = order[Math.min(idx + 1, 1)];
+    else if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = order[Math.max(idx - 1, 0)];
+    if (next) { e.preventDefault(); setView(next); viewBtns.find(function (v){return v.k===next;}).btn.focus(); }
+  }
+
+  /* =================================================================== */
+  /*  SCROLL AFFORDANCES  (edge fades, grab cursor, drag-to-pan, hint)    */
+  /* =================================================================== */
+  function updateFades() {
+    if (state.view === "fit") {
+      viewport.setAttribute("data-scroll-l", "false");
+      viewport.setAttribute("data-scroll-r", "false");
+      viewport.setAttribute("data-hint", "false");
+      scroll.classList.remove("sp-pan");
+      return;
+    }
+    var max = scroll.scrollWidth - scroll.clientWidth;
+    var x = scroll.scrollLeft;
+    var canL = x > 2, canR = x < max - 2;
+    viewport.setAttribute("data-scroll-l", canL ? "true" : "false");
+    viewport.setAttribute("data-scroll-r", canR ? "true" : "false");
+    scroll.classList.toggle("sp-pan", canL || canR);
+    // hint shows only while there's more to the right and before any interaction
+    viewport.setAttribute("data-hint", (canR && !state.interacted) ? "true" : "false");
+  }
+
+  function markInteracted() {
+    if (state.interacted) return;
+    state.interacted = true;
+    viewport.setAttribute("data-hint", "false");
+  }
+
+  // ---- first-run detail-level demo: show the reader the levels do something ----
+  var demoTimers = [];
+  function cancelDemo() { demoTimers.forEach(clearTimeout); demoTimers = []; }
+  function markDemoDone() { cancelDemo(); root.removeAttribute("data-demo"); }
+  function demoStep(level, at) {
+    demoTimers.push(setTimeout(function () {
+      if (root.getAttribute("data-demo") !== "idle") return;   // reader took over
+      setLevel(level);
+    }, at));
+  }
+  function runDemo() {
+    if (state.demoed || root.getAttribute("data-demo") !== "idle") return;
+    state.demoed = true;
+    var mq = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mq && mq.matches) return;            // static ring only, no auto-motion
+    try {                                    // the level sweep plays once per browser session
+      if (sessionStorage.getItem("sdlcSwept")) return;   // ring + callout still show every load
+      sessionStorage.setItem("sdlcSwept", "1");
+    } catch (e) {}
+    demoStep(2, 900);                        // Napkin -> Team
+    demoStep(3, 2300);                       // Team -> Fever Dream
+    demoStep(1, 4100);                        // settle back to Napkin
+  }
+
+  // recompute after layout-affecting changes (level transitions, resize)
+  var reflowTimer = null;
+  function clampScroll() {
+    var max = scroll.scrollWidth - scroll.clientWidth;
+    if (scroll.scrollLeft > max) scroll.scrollLeft = Math.max(0, max);
+  }
+  function scheduleReflow() {
+    clampScroll();
+    updateFades();
+    if (state.view === "fit") applyFit();
+    clearTimeout(reflowTimer);
+    reflowTimer = setTimeout(function () {
+      clampScroll();
+      updateFades();
+      if (state.view === "fit") applyFit();
+    }, 470);   // a touch longer than --sp-anim so it lands after the transition
+  }
+
+  // mouse drag-to-pan (touch uses native momentum scrolling, so skip it there)
+  var drag = null;
+  scroll.addEventListener("pointerdown", function (e) {
+    if (state.view === "fit" || e.pointerType !== "mouse" || e.button !== 0) return;
+    drag = { x: e.clientX, left: scroll.scrollLeft };
+    scroll.setAttribute("data-drag", "true");
+  });
+  window.addEventListener("pointermove", function (e) {
+    if (!drag) return;
+    var dx = e.clientX - drag.x;
+    if (Math.abs(dx) > 3) markInteracted();
+    scroll.scrollLeft = drag.left - dx;
+  });
+  function endDrag() {
+    if (!drag) return;
+    drag = null;
+    scroll.removeAttribute("data-drag");
+  }
+  window.addEventListener("pointerup", endDrag);
+  window.addEventListener("pointercancel", endDrag);
+
+  // keep affordances honest on resize (debounced via rAF)
+  var rafPending = false;
+  function onResize() {
+    if (rafPending) return;
+    rafPending = true;
+    requestAnimationFrame(function () { rafPending = false; updateFades(); if (state.view === "fit") applyFit(); });
+  }
+  if (typeof ResizeObserver !== "undefined") {
+    new ResizeObserver(onResize).observe(scroll);
+  }
+  window.addEventListener("resize", onResize);
+  // auto-retire the hint even if the reader never scrolls
+  setTimeout(markInteracted, 7000);
+
+  /* =================================================================== */
+  /*  ENTRANCE CUE  — a gentle horizontal nudge the first time the figure   */
+  /*  scrolls into view, so the reader sees the pipeline can be panned.    */
+  /* =================================================================== */
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var nudged = false, nudgeAnimating = false;
+  function nudge() {
+    if (nudged) return;
+    nudged = true;
+    if (reduceMotion || state.view === "fit") return;
+    var max = scroll.scrollWidth - scroll.clientWidth;
+    if (max < 24) return;                      // nothing to reveal
+    var amt = Math.min(64, max), dur = 1150, t0 = null;
+    nudgeAnimating = true;
+    function frame(t) {
+      if (t0 === null) t0 = t;
+      var p = Math.min(1, (t - t0) / dur);
+      // out-and-back: a single sine bump (0 → amt → 0), eased at both ends
+      scroll.scrollLeft = amt * Math.sin(p * Math.PI);
+      if (p < 1) { requestAnimationFrame(frame); }
+      else { scroll.scrollLeft = 0; nudgeAnimating = false; }
+    }
+    requestAnimationFrame(frame);
+  }
+  if (typeof IntersectionObserver !== "undefined") {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting && en.intersectionRatio > 0.3) { nudge(); io.disconnect(); }
+      });
+    }, { threshold: [0, 0.3, 0.6] });
+    io.observe(root);
+  } else {
+    setTimeout(nudge, 900);
+  }
+
+  /* =================================================================== */
+  /*  INIT                                                                */
+  /* =================================================================== */
+  setLevel(START_LEVEL);
+  setFilter(null);
+  root.setAttribute("data-det", "mono");   // deterministic-slot look: mono | hatch | ledger
+  updateFades();
+
+  // arm the first-run demo + nudge ring, fire once the figure scrolls into view
+  root.setAttribute("data-demo", "idle");
+  if ("IntersectionObserver" in window) {
+    var demoIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { runDemo(); demoIO.disconnect(); }
+      });
+    }, { threshold: 0.25 });
+    demoIO.observe(root);
+  } else {
+    runDemo();
+  }
+
+  // tiny DOM helper
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+})();
+</script>
+<!-- ============================= EMBED END ============================= -->
