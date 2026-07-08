@@ -9,8 +9,12 @@ TocOpen = false
 [cover]
 image = "images/sculptures/augustus_primaporta.webp"
 alt = "Augustus of Prima Porta, cast of the 1st-century AD marble statue"
-caption = "Augustus of Prima Porta, cast of the 1st-century AD marble statue"
+caption = "Augustus of Prima Porta <span class=\"cap-tip\" tabindex=\"0\">(why him?)<span class=\"cap-tip-body\">Octavian had his 'agents' rebuild Rome in marble; quite a lot of slaves, of course, but it's two millennia ago. Let's try not to read too much into it.</span></span>"
 +++
+
+{{< audience >}}
+Engineers probably, tech leads, CTOs, etc. Anyone interested in adding useful AI to their software development.
+{{< /audience >}}
 
 As I was bolting on more and more autonomous AI agents at Energyworx this past year, I kept looking for the next bit of low-hanging fruit. Turns out there's already a framework that maps where it all is: the SDLC. The Software Development Lifecycle {{< whisper >}}which my OCD thinks should clearly be called "SDL", but I digress{{< /whisper >}} is a pattern to describe how software ideally gets from not existing to "Computo, ergo sum." 
 
