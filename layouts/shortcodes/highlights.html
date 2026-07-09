@@ -1,0 +1,11 @@
+{{- /* Highlights / key-points card. A distinct boxed lead-in at the top of a post:
+       raised panel, bronze rule + mono label, set apart from the body prose.
+       Usage:
+         {{< highlights >}}
+         - first point
+         - second point
+         {{< /highlights >}}                                              */ -}}
+<aside class="highlights" aria-label="Highlights">
+  <span class="highlights-label">Highlights</span>
+  {{ .Inner | .Page.RenderString (dict "display" "block") }}
+</aside>

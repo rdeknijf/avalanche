@@ -1,0 +1,18 @@
+{{- /* Model-output payload panel. A dark monospace block for quoting verbatim
+       machine output (the self-authored jailbreak). Echoes the site's code-block
+       treatment so it reads as captured output, not authorial prose.
+       env=  optional header line (rendered dim/bronze, e.g. the fabricated sandbox banner).
+       Inner is the verbatim excerpt(s); use a plain "[...]" line to mark an elision.
+       Usage:
+         {{< payload env="=== ENVIRONMENT ... ===" >}}
+         first excerpt
+
+         [...]
+
+         second excerpt
+         {{< /payload >}}                                                  */ -}}
+<figure class="payload" aria-label="Model-generated output, quoted verbatim">
+  <figcaption class="payload-label">model output &middot; verbatim</figcaption>
+  {{- with .Get "env" }}<div class="payload-env">{{ . }}</div>{{ end }}
+  <div class="payload-body">{{ .Inner | .Page.RenderString (dict "display" "block") }}</div>
+</figure>
