@@ -61,7 +61,7 @@ params:
   ShowCodeCopyButtons: true
   ShowToc: false
   # comments: false
-  images: ["images/sculptures/horses_san_marco.webp"]
+  images: ["images/og/horses_san_marco.webp"]
 
 #  profileMode:
 #    enabled: false

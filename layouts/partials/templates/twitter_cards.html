@@ -1,0 +1,40 @@
+{{- /* Override of PaperMod's twitter_cards.html.
+     Same substitution as opengraph.html: prefer the 1200x630 variant under
+     static/images/og/ over the 1200x420 on-site cover strip. */ -}}
+{{- if .Params.cover.image -}}
+<meta name="twitter:card" content="summary_large_image">
+{{- if (ne $.Params.cover.relative true) }}
+{{- $img := .Params.cover.image }}
+{{- $wide := replace $img "images/sculptures/" "images/og/" }}
+{{- if and (ne $wide $img) (fileExists (printf "static/%s" $wide)) }}
+<meta name="twitter:image" content="{{ $wide | absURL }}">
+{{- else }}
+<meta name="twitter:image" content="{{ $img | absURL }}">
+{{- end }}
+{{- else }}
+<meta name="twitter:image" content="{{ (path.Join .RelPermalink .Params.cover.image ) | absURL }}">
+{{- end}}
+{{- else }}
+{{- $images := partial "templates/_funcs/get-page-images" . -}}
+{{- with index $images 0 -}}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{{ .Permalink }}">
+{{- else -}}
+<meta name="twitter:card" content="summary">
+{{- end -}}
+{{- end }}
+<meta name="twitter:title" content="{{ .Title }}">
+<meta name="twitter:description" content="{{ with .Description }}{{ . }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ else }}{{ with site.Params.description }}{{ . }}{{ end }}{{ end }}{{ end -}}">
+
+{{- $twitterSite := "" }}
+{{- with site.Params.social }}
+  {{- if reflect.IsMap . }}
+    {{- with .twitter }}
+      {{- $content := . }}
+      {{- if not (strings.HasPrefix . "@") }}
+        {{- $content = printf "@%v" . }}
+      {{- end }}
+      <meta name="twitter:site" content="{{ $content }}">
+    {{- end }}
+  {{- end }}
+{{- end }}
