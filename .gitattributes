@@ -1,1 +1,15 @@
 *.jpg filter=lfs diff=lfs merge=lfs -text
+
+# Only *.jpg is in LFS here; every other binary is tracked plain, and that is
+# deliberate. (The Pages build does resolve LFS fine, verified 2026-08-03: a
+# tracked jpg serves its real bytes live. The split is historical, not a
+# constraint.) These files are small, so leave them plain and just mark them
+# binary (-diff -merge -text): without it git classifies a PDF as text and
+# core.autocrlf=input is free to rewrite bytes on commit.
+*.pdf binary
+*.png binary
+*.webp binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
