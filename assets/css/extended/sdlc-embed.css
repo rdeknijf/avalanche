@@ -27,3 +27,11 @@
   margin-left: 50%;
   transform: translateX(-50%);
 }
+
+/* Same breakout for the podcast post's six-step strip (a copy of sdlc-strip). */
+.reading-body #podcast-strip {
+  width: max-content;
+  max-width: 94vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}

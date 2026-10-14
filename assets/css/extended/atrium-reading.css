@@ -324,3 +324,19 @@
     .reading-dek { font-size: 19px; }
     .payload-body p { font-size: 12.5px; }
 }
+
+/* ── Row of square pictures (podcast post: one picture per feed source) ── */
+.reading-body figure.feed-art { max-width: none; }
+.reading-body .feed-art-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.reading-body .feed-art-row img { width: 100%; height: auto; aspect-ratio: 1; margin: 0; }
+.reading-body .feed-art-row span {
+    display: block;
+    margin-top: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-meta-2);
+    text-align: center;
+}
+@media (max-width: 640px) {
+    .reading-body .feed-art-row { grid-template-columns: repeat(2, 1fr); }
+}
