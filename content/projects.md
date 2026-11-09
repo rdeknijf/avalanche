@@ -12,7 +12,7 @@ closing = "I do this kind of thing for teams too, on contract; [working with me]
 [[params.projects]]
 name = "lateststable.org"
 image = "lateststable"
-alt = "The lateststable.org homepage: the start of its plain list of platforms with their API paths."
+alt = "The lateststable.org homepage, with a registry and package lookup form, a staircase of version tiles for its 15 registries and a live JSON response for fastapi."
 url = "https://lateststable.org"
 source = "https://github.com/rdeknijf/lateststable"
 curl = "curl -s https://lateststable.org/v1/pypi/fastapi"
