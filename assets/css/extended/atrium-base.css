@@ -269,6 +269,9 @@ h1, h2, h3, h4, h5, h6,
     .footer { padding: 20px 24px; flex-direction: column; align-items: flex-start; gap: 12px; }
 }
 @media (max-width: 520px) {
+    .nav { padding: 18px 16px; flex-wrap: wrap; row-gap: 14px; }
+    .nav .logo, .nav #menu { margin: 0; }
+    .nav #menu li + li { margin-inline-start: 0; }
     .nav-right { gap: 18px; }
     .nav-links { gap: 18px; }
 }
