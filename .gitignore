@@ -1,2 +1,6 @@
 /public/
 /resources/_gen/
+.impeccable/mocks/
+.impeccable/questions/
+.impeccable/review/
+.impeccable/hook.cache.json

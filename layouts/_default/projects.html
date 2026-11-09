@@ -1,0 +1,41 @@
+{{- define "main" }}
+<article class="wall post-single">
+
+  <header class="wall-head">
+    <div>
+      <h1 class="wall-title entry-hint-parent">
+        {{ .Title }}
+        {{- if .Draft }}<span class="entry-hint" title="Draft">draft</span>{{- end }}
+      </h1>
+      {{- with .Description }}<p class="wall-dek">{{ . }}</p>{{ end }}
+    </div>
+    <div class="wall-intro">{{ .Content }}</div>
+  </header>
+
+  <div class="wall-grid">
+    {{- range $index, $project := .Params.projects }}
+    {{- $id := anchorize .name }}
+    <section class="exhibit" id="{{ $id }}" aria-labelledby="{{ $id }}-name">
+      <a class="exhibit-plate" href="{{ .url }}" rel="noopener">
+        <img src="{{ printf "images/projects/%s.webp" .image | absURL }}" alt="{{ .alt }}" width="1200" height="750"{{ if ge $index 2 }} loading="lazy"{{ end }} decoding="async">
+      </a>
+      <h2 class="exhibit-name" id="{{ $id }}-name">{{ .name }}</h2>
+      <p class="exhibit-text">{{ .text | markdownify }}</p>
+      <pre class="exhibit-call"><code>{{ .curl | htmlEscape | replaceRE "([^:/])/" "${1}/<wbr>" | replaceRE "(\\?|&amp;)" "${1}<wbr>" | replaceRE "(\\w+(?:-\\w+)+)" "<span class=\"exhibit-nowrap\">${1}</span>" | safeHTML }}</code></pre>
+      <p class="exhibit-links">
+        <a href="{{ .url }}" rel="noopener">{{ (urls.Parse .url).Host }}</a>
+        <span aria-hidden="true">&middot;</span>
+        <a href="{{ .source }}" rel="noopener">source on GitHub</a>
+        {{- with .docs }}
+        <span aria-hidden="true">&middot;</span>
+        <a href="{{ . }}" rel="noopener">docs</a>
+        {{- end }}
+      </p>
+    </section>
+    {{- end }}
+  </div>
+
+  {{- with .Params.closing }}<p class="wall-close">{{ . | markdownify }}</p>{{ end }}
+
+</article>
+{{- end }}{{/* end main */}}
