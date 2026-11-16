@@ -1,0 +1,50 @@
+{{- /* One change, two layouts: the same change (infrastructure, frontend, schema) as
+       one commit in one repository, and as a chain of pull requests across repositories
+       linked by pinned versions. Static, theme tokens, no JS.
+       Usage: {{< one-change >}} */ -}}
+<figure class="onechange">
+<style>
+.onechange { margin: 2.2em 0 2.4em; }
+.onechange .oc-grid { display: grid; grid-template-columns: 1fr 1.35fr; column-gap: 1.8em; }
+.onechange .oc-panel + .oc-panel { padding-left: 1.8em; border-left: 1px solid var(--rule); }
+.onechange .oc-title { margin: 0 0 .7em; font-family: var(--font-sans); font-size: 12.5px; color: var(--text-muted); }
+.onechange .oc-repo { border: 1px solid var(--accent); border-radius: 4px; padding: .55em .7em; background: var(--bg-card); }
+.onechange .oc-repo-name { font-family: var(--font-mono); font-size: 13px; color: var(--text); }
+.onechange ul { list-style: none; margin: .4em 0 0; padding: 0; }
+.onechange li { margin: .15em 0; font-family: var(--font-mono); font-size: 12.5px; color: var(--text-muted); }
+.onechange ul li::before { content: "~ "; color: var(--accent); }
+.onechange .oc-steps { counter-reset: oc; list-style: none; margin: 0; padding: 0; }
+.onechange .oc-step { counter-increment: oc; position: relative; margin: 0 0 .5em; padding: .45em .7em .45em 2.2em; border: 1px solid var(--rule); border-radius: 4px; background: var(--bg-card); font-family: var(--font-mono); font-size: 12.5px; color: var(--text); }
+.onechange .oc-step::before { content: counter(oc); position: absolute; left: .7em; top: .45em; color: var(--accent); font-weight: 600; }
+.onechange .oc-step span { display: block; font-family: var(--font-sans); font-size: 12.5px; color: var(--text-muted); }
+.onechange .oc-step + .oc-step::after { content: ""; position: absolute; left: .95em; top: -.55em; height: .55em; border-left: 1px solid var(--accent); }
+.onechange .oc-tally { margin-top: .8em; font-family: var(--font-sans); font-size: 13px; color: var(--text); }
+.onechange .oc-nw { white-space: nowrap; }
+.onechange .oc-tally b { color: var(--accent); font-weight: 600; }
+figure.onechange > figcaption { margin-top: .9em; font-family: var(--font-sans); font-size: 12.5px; font-weight: 400; text-align: left; letter-spacing: 0; text-transform: none; color: var(--text-muted); }
+@media (max-width: 640px) {
+  .onechange .oc-grid { grid-template-columns: 1fr; }
+  .onechange .oc-panel + .oc-panel { padding-left: 0; border-left: 0; margin-top: 1.2em; padding-top: 1.2em; border-top: 1px solid var(--rule); }
+}
+</style>
+<div class="oc-grid">
+  <div class="oc-panel">
+    <p class="oc-title">One repository</p>
+    <div class="oc-repo"><span class="oc-repo-name">monorepo</span>
+      <ul><li>infra/network.tf</li><li>frontend/button.css</li><li>db/schema.sql</li></ul>
+    </div>
+    <p class="oc-tally"><span class="oc-nw"><b>1</b> commit,</span> <span class="oc-nw"><b>1</b> review,</span> <span class="oc-nw"><b>1</b> pipeline,</span> <span class="oc-nw"><b>1</b> deploy</span></p>
+  </div>
+  <div class="oc-panel">
+    <p class="oc-title">Many repositories, pinned versions</p>
+    <ol class="oc-steps">
+      <li class="oc-step">terraform-modules<span>change, review, release v1.5</span></li>
+      <li class="oc-step">app-infra<span>bump the pin to v1.5, review, release</span></li>
+      <li class="oc-step">db-schema<span>change, review, release, migrate</span></li>
+      <li class="oc-step">app<span>bump two pins, change the button, review, deploy last</span></li>
+    </ol>
+    <p class="oc-tally"><span class="oc-nw"><b>4</b> pull requests,</span> <span class="oc-nw"><b>4</b> pipelines,</span> <span class="oc-nw"><b>1</b> fixed order</span></p>
+  </div>
+</div>
+<figcaption>An illustrative change, not a picture of that company.</figcaption>
+</figure>

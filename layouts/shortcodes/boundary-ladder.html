@@ -1,0 +1,39 @@
+{{- /* Boundary ladder: software's named boundaries from line to service, with a bar
+       for the rough cost of crossing each one (not to scale). The last two rows carry
+       the "where architects think" bracket. Static, theme tokens, no JS.
+       Usage: {{< boundary-ladder >}} */ -}}
+<figure class="bladder">
+<style>
+.bladder { margin: 2.2em 0 2.4em; padding: 1.1em 1.2em 1em; background: var(--bg-raised); border: 1px solid var(--rule); border-radius: 6px; }
+.bladder .bl-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1em; margin: 0 0 .8em; font-family: var(--font-sans); font-size: 12.5px; color: var(--text-muted); }
+.bladder .bl-row { display: grid; grid-template-columns: 7.2em 1fr; align-items: start; column-gap: .9em; padding: .32em 0; font-size: 16px; }
+.bladder .bl-name { font-family: var(--font-mono); font-size: 13px; line-height: 17px; color: var(--text); text-align: right; }
+.bladder .bl-track { min-width: 0; }
+.bladder .bl-bar { display: block; height: 10px; min-width: 4px; margin-top: 3.5px; border-radius: 2px; background: var(--text-faint); }
+.bladder .bl-heavy .bl-bar { background: var(--accent); }
+.bladder .bl-cost { display: block; margin-top: .22em; font-family: var(--font-sans); font-size: 12.5px; line-height: 1.35; color: var(--text-muted); }
+.bladder .bl-arch { margin-top: .35em; padding-top: .35em; border-top: 1px dashed var(--rule); }
+.bladder .bl-arch-label { font-family: var(--font-serif); font-style: italic; font-size: 14px; color: var(--accent); }
+figure.bladder > figcaption { margin-top: .9em; font-family: var(--font-sans); font-size: 12.5px; font-weight: 400; text-align: left; letter-spacing: 0; text-transform: none; color: var(--text-muted); }
+.bladder .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 520px) {
+  .bladder { padding: 1em .9em .9em; }
+  .bladder .bl-row { grid-template-columns: 5.6em 1fr; column-gap: .7em; }
+  .bladder .bl-name { font-size: 12px; }
+}
+</style>
+<span class="vh">Software boundaries from line to service, and what crossing each one costs.</span>
+<div class="bl-head" aria-hidden="true"><span>Boundary</span><span>What crossing it costs</span></div>
+<div class="bl-row"><span class="bl-name">line</span><span class="bl-track"><span class="bl-bar" aria-hidden="true" style="width:2%"></span></span></div>
+<div class="bl-row"><span class="bl-name">function</span><span class="bl-track"><span class="bl-bar" aria-hidden="true" style="width:3%"></span><span class="bl-cost">a name and a call</span></span></div>
+<div class="bl-row"><span class="bl-name">file</span><span class="bl-track"><span class="bl-bar" aria-hidden="true" style="width:4.5%"></span><span class="bl-cost">an import; your IDE does the move</span></span></div>
+<div class="bl-row"><span class="bl-name">folder</span><span class="bl-track"><span class="bl-bar" aria-hidden="true" style="width:6%"></span><span class="bl-cost">a longer import path</span></span></div>
+<div class="bl-row"><span class="bl-name">module</span><span class="bl-track"><span class="bl-bar" aria-hidden="true" style="width:9%"></span><span class="bl-cost">an interface</span></span></div>
+<div class="bl-row"><span class="bl-name">package</span><span class="bl-track"><span class="bl-bar" aria-hidden="true" style="width:15%"></span><span class="bl-cost">a dependency declaration</span></span></div>
+<div class="bl-arch">
+<div class="bl-row"><span></span><span class="bl-arch-label">where architects think</span></div>
+<div class="bl-row bl-heavy"><span class="bl-name">repository</span><span class="bl-track"><span class="bl-bar" aria-hidden="true" style="width:58%"></span><span class="bl-cost">a pull request on each side, a second pipeline, an integration or contract test, a pinned version to update</span></span></div>
+<div class="bl-row bl-heavy"><span class="bl-name">service</span><span class="bl-track"><span class="bl-bar" aria-hidden="true" style="width:100%"></span><span class="bl-cost">everything a repository costs, plus a network contract and a deployment order</span></span></div>
+</div>
+<figcaption>Bar lengths are illustrative, not measured.</figcaption>
+</figure>
